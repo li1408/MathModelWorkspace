@@ -17,6 +17,7 @@
 | --- | --- |
 | `resources/MathModelHub/` | 参考资料库，只读使用 |
 | `competitions/CUMCM2026/` | 当前正式数学建模工作项目 |
+| `competitions/CUMCM2026/00_inbox/` | 队友临时投递题目 PDF、附件文件夹和说明文件 |
 | `competitions/CUMCM2026/01_problem/` | 题目文件和题面说明 |
 | `competitions/CUMCM2026/02_raw_data/` | 原始数据，只登记、不直接修改 |
 | `competitions/CUMCM2026/04_code/` | Python 清洗、建模、验证、画图脚本 |
@@ -79,6 +80,7 @@ cd E:\AI\MathModelWorkspace\competitions\CUMCM2026
 ## 协作规则 ✅
 
 - 不把 `.venv/`、`.local/`、LaTeX 编译产物、临时缓存、大文件和本地敏感信息上传到 GitHub。
+- 队友不会分类时，先把题目 PDF 和附件文件夹放到 `competitions/CUMCM2026/00_inbox/`，再让 Codex 整理。
 - 原始数据放在 `02_raw_data/`，不要直接修改；清洗结果另存。
 - 论文里的结论必须能追溯到代码、数据和输出结果。
 - 没有真实数据和代码结果时，保留 `\placeholder{}`，不要编造数值、结论或参考文献。

@@ -18,6 +18,8 @@
 
 ## 文件与数据规则
 
+- 队友临时投递的题目、附件和说明文件先放入 `00_inbox/`。
+- 整理 `00_inbox/` 时，先识别文件类型，再移动到 `00_official/`、`01_problem/` 或 `02_raw_data/`。
 - 原始数据只读保存到 `02_raw_data/`。
 - 大体积数据必须登记到 `02_raw_data/data_manifest.csv`。
 - 每份原始数据应记录 SHA256 到 `02_raw_data/checksums.sha256`。

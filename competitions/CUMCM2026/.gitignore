@@ -9,6 +9,11 @@ __pycache__/
 .ruff_cache/
 .ipynb_checkpoints/
 
+# Team drop zone
+# Keep real problem files, attachments, and large inbox data out of Git.
+00_inbox/*
+!00_inbox/README.md
+
 # LaTeX auxiliary files
 *.aux
 *.bbl

@@ -139,8 +139,15 @@ cd E:\AI\MathModelWorkspace\competitions\CUMCM2026
 
 ## 放文件的位置 🗂️
 
+如果你不确定文件属于哪一类，先全部放到 `00_inbox/`，然后告诉队长或 Codex：
+
+```text
+题目和附件已经放到 00_inbox，请整理到正式目录。
+```
+
 | 内容 | 放到哪里 |
 | --- | --- |
+| 不会分类的题目和附件 | `00_inbox/` |
 | 题目文件 | `01_problem/` |
 | 官方通知和规则 | `00_official/` |
 | 原始数据 | `02_raw_data/` |
@@ -158,6 +165,7 @@ cd E:\AI\MathModelWorkspace\competitions\CUMCM2026
 
 - `.venv/`
 - `.local/`
+- `00_inbox/` 里的真实题目、附件和大文件
 - `07_paper/build/`
 - LaTeX 辅助文件，例如 `.aux`、`.log`、`.xdv`
 - 本地敏感词文件：`10_submission_check/sensitive_terms.local.yml`
