@@ -1,59 +1,102 @@
-# MathModelWorkspace
+# MathModelWorkspace 📘
 
-这是一个面向数学建模竞赛的可复现工作区。核心环境为 MiKTeX、VS Code、LaTeX Workshop、Codex、Python、Git 和 GitHub。
+这是一个为数学建模竞赛准备的可复现工作区。它把论文写作、Python 建模、LaTeX 编译、AI 辅助、Git 版本管理和提交前检查放在同一个清晰结构里，方便队伍协作和最终复核。🤝
 
-## 工作区结构
+## 我们想实现什么 🎯
 
-- `resources/MathModelHub/`：MathModelHub 参考库，只用于查阅算法、模板、Notebook 和工作流资料。
-- `competitions/CUMCM2026/`：当前正式工作项目，用于 2026 全国大学生数学建模竞赛训练和实战。
-- `competitions/2026-practice-01/`：早期练习模板，保留作为结构参考。
+- 用 `competitions/CUMCM2026/` 写正式训练和比赛论文。
+- 用 `resources/MathModelHub/` 查资料、看模板、参考算法，但不在里面写正式论文。
+- 用 Python 处理数据、建模、画图和导出表格。
+- 用 `ctexart + XeLaTeX + BibTeX + gbt7714-numerical` 编译中文论文。
+- 用 Codex 协助写 LaTeX、修复编译错误、生成分析代码和检查论文逻辑。
+- 用 Git/GitHub 保存可追溯版本，避免最后一天文件混乱。
 
-## 基本原则
+## 当前核心目录 🗂️
 
-- `resources/` 只作为学习和参考来源，不在其中写正式比赛论文。
-- 每个比赛或练习题单独放在 `competitions/<project-name>/`。
-- CUMCM2026 原始数据放入 `02_raw_data/`，不直接修改。
-- 清洗和中间结果写入 `03_processed_data/`、`05_model_results/` 或项目约定输出目录。
-- 代码生成的图表和表格写入 `06_paper_assets/figures/`、`06_paper_assets/tables/`。
-- 论文结论必须能追溯到 `04_code/` 中的脚本、Notebook、日志或模型输出。
-- 不编造数据、实验结果、参考文献或图表。
-- 大文件、虚拟环境、LaTeX 编译产物、本地敏感词配置和临时缓存不进入 Git。
+| 路径 | 用途 |
+| --- | --- |
+| `resources/MathModelHub/` | 参考资料库，只读使用 |
+| `competitions/CUMCM2026/` | 当前正式数学建模工作项目 |
+| `competitions/CUMCM2026/01_problem/` | 题目文件和题面说明 |
+| `competitions/CUMCM2026/02_raw_data/` | 原始数据，只登记、不直接修改 |
+| `competitions/CUMCM2026/04_code/` | Python 清洗、建模、验证、画图脚本 |
+| `competitions/CUMCM2026/06_paper_assets/` | 论文要引用的图表资源 |
+| `competitions/CUMCM2026/07_paper/` | LaTeX 论文主目录 |
+| `competitions/CUMCM2026/10_submission_check/` | 提交前自动检查脚本和规则 |
+| `competitions/CUMCM2026/11_final_submission/` | 最终冻结提交文件 |
 
-## MathModelHub 引用方式
+## 队友第一次使用 🚀
 
-`resources/MathModelHub` 作为 Git submodule 记录到本仓库，指向：
+详细步骤请看：[TEAM_SETUP.md](TEAM_SETUP.md)
 
-```text
-https://github.com/li1408/MathModelHub.git
-```
-
-克隆本仓库后，如需同步参考库，使用：
+最短流程如下：
 
 ```powershell
-git submodule update --init --recursive
+git clone --recurse-submodules https://github.com/li1408/MathModelWorkspace.git
+cd MathModelWorkspace\competitions\CUMCM2026
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\scripts\setup_local_paths.ps1
+.\scripts\check_latex_env.ps1
 ```
 
-同步后仍然把 `resources/MathModelHub` 当作参考库，不在其中写正式比赛论文。
+建议把仓库克隆到 E 盘或其他非 C 盘位置，避免虚拟环境、缓存和大数据占用 C 盘。💾
 
-## 当前项目
+## 常用命令 🧰
 
-打开 VS Code 时建议直接打开：
+进入项目目录：
 
-```text
-E:\AI\MathModelWorkspace\competitions\CUMCM2026
+```powershell
+cd E:\AI\MathModelWorkspace\competitions\CUMCM2026
 ```
 
-常用检查命令：
+检查 LaTeX 环境：
 
 ```powershell
 .\scripts\check_latex_env.ps1
-.\.venv\Scripts\python.exe 04_code\run_all.py --dry-run
-.\.venv\Scripts\python.exe 10_submission_check\check_submission.py --root . --mode draft
 ```
 
-论文正式编译命令：
+检查 Python 流水线：
+
+```powershell
+.\.venv\Scripts\python.exe 04_code\run_all.py --dry-run
+```
+
+编译论文：
 
 ```powershell
 cd E:\AI\MathModelWorkspace\competitions\CUMCM2026\07_paper
 ..\.local\bin\latexmk.cmd -xelatex -outdir=build main.tex
 ```
+
+提交前草稿检查：
+
+```powershell
+cd E:\AI\MathModelWorkspace\competitions\CUMCM2026
+.\.venv\Scripts\python.exe 10_submission_check\check_submission.py --root . --mode draft
+```
+
+## 协作规则 ✅
+
+- 不把 `.venv/`、`.local/`、LaTeX 编译产物、临时缓存、大文件和本地敏感信息上传到 GitHub。
+- 原始数据放在 `02_raw_data/`，不要直接修改；清洗结果另存。
+- 论文里的结论必须能追溯到代码、数据和输出结果。
+- 没有真实数据和代码结果时，保留 `\placeholder{}`，不要编造数值、结论或参考文献。
+- `resources/MathModelHub/` 只作为参考，不在其中写比赛论文。
+- 最终提交前必须跑自动检查，也必须做人工双人交叉复核。👀
+
+## 分支建议 🌱
+
+- `main`：稳定版本。
+- `dev`：日常整合版本。
+- `feature/*`：题目分析、模型、论文章节等具体任务。
+- `fix/*`：修复编译、检查脚本或数据处理问题。
+
+## 遇到问题先看这里 🧭
+
+- LaTeX 编译失败：先跑 `.\scripts\check_latex_env.ps1`。
+- Python 包缺失：确认正在使用 `.venv\Scripts\python.exe`。
+- GitHub 上看不到 MathModelHub 内容：运行 `git submodule update --init --recursive`。
+- final 检查失败：这是正常的，直到占位符、敏感词、本地规则和最终 PDF 都处理完才会通过。
+
+这个仓库的目标不是“把所有东西都塞进 Git”，而是让每一步工作都能被复现、检查和追踪。🙂
