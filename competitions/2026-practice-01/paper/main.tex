@@ -1,0 +1,57 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+\usepackage{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\graphicspath{{../figures/}{figures/}}
+\setlist{nosep}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue
+}
+
+\title{\textbf{数学建模论文题目}}
+\author{队伍编号：待填写}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{sections/abstract.tex}
+
+\tableofcontents
+\newpage
+
+\input{sections/problem.tex}
+\input{sections/assumptions.tex}
+\input{sections/notation.tex}
+\input{sections/preprocessing.tex}
+\input{sections/model.tex}
+\input{sections/solution.tex}
+\input{sections/validation.tex}
+\input{sections/sensitivity.tex}
+\input{sections/conclusion.tex}
+
+\section*{参考文献}
+\addcontentsline{toc}{section}{参考文献}
+当前模板没有真实引用，因此不列出参考文献。正式写作时，请从 Zotero 导出 BibTeX 到 \texttt{references.bib}，只引用已经实际阅读并用于论文的资料。
+
+\appendix
+\section{附录}
+附录用于放置补充推导、伪代码、额外表格和代码说明。完整代码应保存在项目根目录的 \texttt{code/} 文件夹中。
+
+\end{document}

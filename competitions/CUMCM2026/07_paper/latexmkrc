@@ -1,0 +1,22 @@
+$pdf_mode = 5;
+$out_dir = 'build';
+$aux_dir = 'build';
+
+my $miktex_bin = $ENV{'MIKTEX_BIN'} || '';
+$miktex_bin =~ s!\\!/!g;
+
+if ($miktex_bin ne '') {
+  $xelatex = qq{"$miktex_bin/xelatex.exe" -disable-installer -synctex=1 -interaction=nonstopmode -file-line-error %O %S};
+  $bibtex = qq{"$miktex_bin/bibtex.exe" %O %B};
+  $xdvipdfmx = qq{"$miktex_bin/xdvipdfmx.exe" -E -o %D %O %S};
+} else {
+  $xelatex = 'xelatex -disable-installer -synctex=1 -interaction=nonstopmode -file-line-error %O %S';
+  $bibtex = 'bibtex %O %B';
+}
+
+$ENV{'TEXINPUTS'} = '../styles;' . ($ENV{'TEXINPUTS'} || '');
+$ENV{'BIBINPUTS'} = '.;' . ($ENV{'BIBINPUTS'} || '');
+$ENV{'BSTINPUTS'} = '.;' . ($ENV{'BSTINPUTS'} || '');
+
+@default_files = ('main.tex');
+$clean_ext = 'aux bbl blg fdb_latexmk fls log out synctex.gz toc xdv';

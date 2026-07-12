@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "James-Yu.latex-workshop",
+    "openai.chatgpt",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-toolsai.jupyter",
+    "eamodio.gitlens",
+    "yzhang.markdown-all-in-one",
+    "usernamehw.errorlens",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

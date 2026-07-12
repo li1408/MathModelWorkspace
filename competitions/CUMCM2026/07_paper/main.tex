@@ -1,0 +1,51 @@
+﻿% !TeX program = xelatex
+% !BIB program = bibtex
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+\usepackage{cumcm2026}
+
+% Set this to \usereferencestrue only after adding and citing real sources.
+\newif\ifusereferences
+\usereferencesfalse
+
+\title{\placeholder{论文题目}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\noindent\textbf{关键词：}\placeholder{关键词1；关键词2；关键词3}
+
+\clearpage
+\setcounter{page}{1}
+
+\input{sections/problem}
+\input{sections/assumptions}
+\input{sections/notation}
+\input{sections/preprocessing}
+\input{sections/model}
+\input{sections/solution}
+\input{sections/validation}
+\input{sections/sensitivity}
+\input{sections/conclusion}
+
+\section{参考文献}
+\ifusereferences
+  \bibliographystyle{gbt7714-numerical}
+  \bibliography{references}
+\else
+  \placeholder{添加正文真实引用过的文献后，将文首的参考文献开关改为 true。不得保留虚构文献、未读文献或未引用文献。}
+\fi
+
+\cumcmappendixsetup
+\section{代码与支撑材料说明}
+\input{sections/appendix}
+
+\end{document}

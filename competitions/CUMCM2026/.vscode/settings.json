@@ -1,0 +1,96 @@
+{
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "latex-workshop.latex.recipe.default": "first",
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (XeLaTeX + BibTeX)",
+      "tools": [
+        "latexmk-xelatex"
+      ]
+    },
+    {
+      "name": "xelatex diagnostic (single run)",
+      "tools": [
+        "xelatex-diagnostic"
+      ]
+    },
+    {
+      "name": "xelatex -> bibtex -> xelatex -> xelatex diagnostic",
+      "tools": [
+        "xelatex-diagnostic",
+        "bibtex-build",
+        "xelatex-diagnostic",
+        "xelatex-diagnostic"
+      ]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk-xelatex",
+      "command": "${workspaceFolder}/.local/bin/latexmk.cmd",
+      "args": [
+        "-cd",
+        "-xelatex",
+        "-outdir=build",
+        "%DOC%"
+      ],
+      "env": {
+        "PATH": "${workspaceFolder}/.local/bin;${env:PATH}",
+        "TEMP": "${workspaceFolder}/.local/temp",
+        "TMP": "${workspaceFolder}/.local/temp",
+        "TEXINPUTS": "${workspaceFolder}/styles;${env:TEXINPUTS}",
+        "BIBINPUTS": "%DIR%;${env:BIBINPUTS}",
+        "BSTINPUTS": "%DIR%;${env:BSTINPUTS}"
+      }
+    },
+    {
+      "name": "xelatex-diagnostic",
+      "command": "${workspaceFolder}/.local/bin/xelatex.cmd",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=%DIR%/build",
+        "%DOC%"
+      ],
+      "env": {
+        "PATH": "${workspaceFolder}/.local/bin;${env:PATH}",
+        "TEMP": "${workspaceFolder}/.local/temp",
+        "TMP": "${workspaceFolder}/.local/temp",
+        "TEXINPUTS": "${workspaceFolder}/styles;${env:TEXINPUTS}"
+      }
+    },
+    {
+      "name": "bibtex-build",
+      "command": "${workspaceFolder}/.local/bin/bibtex.cmd",
+      "args": [
+        "%DIR%/build/%DOCFILE%"
+      ],
+      "env": {
+        "PATH": "${workspaceFolder}/.local/bin;${env:PATH}",
+        "TEMP": "${workspaceFolder}/.local/temp",
+        "TMP": "${workspaceFolder}/.local/temp",
+        "BIBINPUTS": "%DIR%;${env:BIBINPUTS}",
+        "BSTINPUTS": "%DIR%;${env:BSTINPUTS}"
+      }
+    }
+  ],
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.envFile": "${workspaceFolder}/.env.workspace",
+  "python.terminal.activateEnvironment": true,
+  "terminal.integrated.env.windows": {
+    "TEMP": "${workspaceFolder}/.local/temp",
+    "TMP": "${workspaceFolder}/.local/temp",
+    "PIP_CACHE_DIR": "${workspaceFolder}/.local/pip-cache",
+    "MPLCONFIGDIR": "${workspaceFolder}/.local/matplotlib",
+    "JUPYTER_CONFIG_DIR": "${workspaceFolder}/.local/jupyter/config",
+    "JUPYTER_DATA_DIR": "${workspaceFolder}/.local/jupyter/data",
+    "JUPYTER_RUNTIME_DIR": "${workspaceFolder}/.local/jupyter/runtime"
+  },
+  "jupyter.notebookFileRoot": "${workspaceFolder}"
+}

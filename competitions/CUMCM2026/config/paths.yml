@@ -1,0 +1,19 @@
+paths:
+  official: "00_official"
+  problem: "01_problem"
+  raw_data: "02_raw_data"
+  processed_data: "03_processed_data"
+  code: "04_code"
+  model_results: "05_model_results"
+  paper_assets: "06_paper_assets"
+  paper: "07_paper"
+  supporting_materials: "08_supporting_materials"
+  ai_logs: "09_ai_logs"
+  submission_check: "10_submission_check"
+  final_submission: "11_final_submission"
+
+outputs:
+  final_pdf_dir: "11_final_submission"
+  checksum_file: "11_final_submission/checksums.sha256"
+  ai_usage_log: "09_ai_logs/ai_usage_log.csv"
+  raw_data_manifest: "02_raw_data/data_manifest.csv"

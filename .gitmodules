@@ -1,0 +1,4 @@
+[submodule "resources/MathModelHub"]
+	path = resources/MathModelHub
+	url = https://github.com/li1408/MathModelHub.git
+	branch = main

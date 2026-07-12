@@ -1,0 +1,18 @@
+timeline:
+  basis: "CUMCM 约三天连续比赛，具体时间需要根据当年官方文件确认"
+  phases:
+    - id: phase_1
+      range: "0-6h"
+      goal: "下载备份赛题、三人独立读题、选题评分、确定题目、拆解小问"
+    - id: phase_2
+      range: "6-18h"
+      goal: "数据检查、清洗、探索分析、基准模型、第一批可用结果、论文框架"
+    - id: phase_3
+      range: "18-42h"
+      goal: "主要模型、各小问初步求解、核心图表、同步写正文"
+    - id: phase_4
+      range: "42-60h"
+      goal: "模型改进、模型对比、误差分析、灵敏度和鲁棒性分析、论文主体"
+    - id: phase_5
+      range: "60h-deadline"
+      goal: "摘要结论、图表核查、参考文献、支撑材料、匿名检查、最终 PDF 和提交"

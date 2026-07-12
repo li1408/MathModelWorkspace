@@ -1,0 +1,19 @@
+# Copy this file to sensitive_terms.local.yml and replace every example value.
+# sensitive_terms.local.yml is ignored by Git and must contain real team-specific
+# sensitive terms before final submission checks.
+
+contains_example_values: true
+
+terms:
+  names:
+    - "EXAMPLE_NAME"
+  schools:
+    - "EXAMPLE_SCHOOL"
+  colleges:
+    - "EXAMPLE_COLLEGE"
+  teachers:
+    - "EXAMPLE_TEACHER"
+  student_ids:
+    - "EXAMPLE_STUDENT_ID"
+  contacts:
+    - "EXAMPLE_CONTACT"

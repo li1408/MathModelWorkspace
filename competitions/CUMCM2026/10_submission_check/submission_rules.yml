@@ -1,0 +1,109 @@
+rules_version: 2
+notice: "National rules listed under national_rules are treated as confirmed for the current workflow. School and regional additions remain under local_rules and must be filled manually when available."
+
+national_rules:
+  abstract_max_pages: 1
+  body_has_table_of_contents: false
+  body_max_pages: 30
+  appendix_page_limit: null
+  electronic_paper_formats:
+    - "PDF"
+    - "Word"
+  recommended_electronic_paper_format: "PDF"
+  electronic_paper_max_size_mb: 20
+  supporting_material_formats:
+    - "ZIP"
+    - "RAR"
+  supporting_material_max_size_mb: 20
+  electronic_paper_excludes_commitment_form_and_number_page: true
+  anonymity_scope:
+    - "paper"
+    - "appendix"
+    - "supporting_materials"
+  forbidden_identity_information:
+    - "identity"
+    - "school"
+    - "competition_region"
+  upload_filename_requirement: "No national filename requirement; the national contest management system renames uploaded files automatically."
+
+local_rules:
+  school_deadline: null
+  school_filename: null
+  font_size_line_spacing: null
+  paper_copy_count: null
+  school_extra_forms: null
+  regional_extra_requirements: null
+
+required_files:
+  draft:
+    - "07_paper/main.tex"
+    - "07_paper/references.bib"
+    - "07_paper/latexmkrc"
+    - "styles/cumcm2026.sty"
+  final:
+    - "11_final_submission/checksums.sha256"
+    - "11_final_submission/freeze_log.md"
+    - "11_final_submission/final_paper.pdf"
+
+scan:
+  text_extensions:
+    - ".tex"
+    - ".bib"
+    - ".md"
+    - ".txt"
+    - ".csv"
+    - ".yml"
+    - ".yaml"
+    - ".json"
+    - ".py"
+  excluded_dirs:
+    - ".git"
+    - ".venv"
+    - "venv"
+    - ".local"
+    - "resources"
+    - "07_paper/build"
+    - "10_submission_check/reports"
+    - "10_submission_check/tests"
+  latex_aux_extensions:
+    - ".aux"
+    - ".bbl"
+    - ".bcf"
+    - ".blg"
+    - ".fdb_latexmk"
+    - ".fls"
+    - ".log"
+    - ".out"
+    - ".run.xml"
+    - ".synctex.gz"
+    - ".toc"
+    - ".xdv"
+  output_dirs:
+    - "03_processed_data"
+    - "05_model_results"
+    - "06_paper_assets"
+    - "11_final_submission"
+  large_file_warning_mb: 20
+  large_file_error_mb: 100
+
+latex:
+  paper_dir: "07_paper"
+  main_tex: "07_paper/main.tex"
+  log_file: "07_paper/build/main.log"
+  graphics_paths:
+    - "06_paper_assets/figures"
+    - "06_paper_assets/diagrams"
+    - "06_paper_assets/tables"
+    - "07_paper/figures"
+  graphics_extensions:
+    - ".pdf"
+    - ".png"
+    - ".jpg"
+    - ".jpeg"
+
+final:
+  checksums_file: "11_final_submission/checksums.sha256"
+  final_pdf: "11_final_submission/final_paper.pdf"
+  max_pdf_pages: null
+  max_pdf_size_mb: 20
+  required_human_reviewers: 2

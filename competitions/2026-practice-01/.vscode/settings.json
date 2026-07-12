@@ -1,0 +1,35 @@
+{
+  "latex-workshop.latex.outDir": "E:/AI/MathModelWorkspace/competitions/2026-practice-01/output",
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "XeLaTeX -> XeLaTeX",
+      "tools": [
+        "xelatex-output",
+        "xelatex-output"
+      ]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "xelatex-output",
+      "command": "E:/AI/MathModelWorkspace/competitions/2026-practice-01/.local/miktex-bin/xelatex.exe",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=E:/AI/MathModelWorkspace/competitions/2026-practice-01/output",
+        "%DOCFILE%"
+      ],
+      "env": {
+        "PATH": "E:/AI/MathModelWorkspace/competitions/2026-practice-01/.local/miktex-bin;${env:PATH}"
+      }
+    }
+  ],
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "jupyter.notebookFileRoot": "${workspaceFolder}"
+}

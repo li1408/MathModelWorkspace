@@ -1,0 +1,12 @@
+# Allowlist for check_submission.py.
+# Each item must match rule + path + match exactly. Do not use this file to
+# bypass real anonymity, reproducibility, or submission issues.
+
+allow: []
+
+# Example:
+# allow:
+#   - rule: "sensitive_terms"
+#     path: "07_paper/references.bib"
+#     match: "某机构名称"
+#     reason: "Reviewed false positive in a real reference title."

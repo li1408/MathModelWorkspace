@@ -1,0 +1,20 @@
+project:
+  name: CUMCM2026
+  competition: "2026 高教社杯全国大学生数学建模竞赛"
+  competition_type: "CUMCM 中文国赛本科组"
+  language: zh-CN
+  paper_engine: xelatex
+  paper_class: ctexart
+  status: planning
+
+privacy:
+  github_visibility: private
+  allowed_collaborators: 3
+  github_pages: false
+  public_release_allowed: false
+
+rules:
+  official_rules_source: "需要根据当年全国组委会及赛区官方文件确认"
+  do_not_mix_mcm_icm: true
+  require_manual_final_review: true
+  require_two_person_cross_check: true

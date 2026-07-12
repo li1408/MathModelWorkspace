@@ -1,0 +1,63 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{cumcm2026}[2026/07/10 CUMCM 2026 configurable style]
+
+% This file centralizes adjustable formatting for the CUMCM Chinese workflow.
+% Official formatting details must be checked against the 2026 national and
+% regional competition documents before final submission.
+
+\RequirePackage{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{bm}
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{longtable}
+\RequirePackage{float}
+\RequirePackage{enumitem}
+\RequirePackage{caption}
+\RequirePackage{xcolor}
+\RequirePackage{hyperref}
+
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\linespread{1.25}
+
+\graphicspath{
+  {../06_paper_assets/figures/}
+  {../06_paper_assets/diagrams/}
+  {../06_paper_assets/tables/}
+}
+
+\setlist{nosep,leftmargin=2.5em}
+\captionsetup{labelsep=space,font=small}
+
+\renewcommand{\thesection}{\chinese{section}、}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue
+}
+
+\newcommand{\placeholder}[1]{%
+  \ifmmode
+    \text{\textbf{[[PLACEHOLDER: \detokenize{#1}]]}}%
+  \else
+    \begingroup\bfseries\color{red}[[PLACEHOLDER: \detokenize{#1}]]\endgroup%
+  \fi
+}
+
+\newcommand{\cumcmplaceholder}[1]{\placeholder{#1}}
+\newcommand{\cumcminlineplaceholder}[1]{\placeholder{#1}}
+\newcommand{\cumcmmathplaceholder}[1]{\placeholder{#1}}
+
+\newcommand{\cumcmappendixsetup}{%
+  \appendix
+  \renewcommand{\thesection}{附录\Alph{section}}%
+  \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}%
+}

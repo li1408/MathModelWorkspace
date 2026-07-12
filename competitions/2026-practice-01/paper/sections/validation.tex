@@ -1,0 +1,10 @@
+\section{模型检验与结果分析}
+
+本节用于说明模型检验方法、误差指标、对照实验和结果解释。若使用预测模型，可根据具体任务定义误差指标，例如
+\begin{equation}
+  \mathrm{RMSE}
+  =
+  \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}.
+  \label{eq:rmse}
+\end{equation}
+该指标只有在存在真实观测值 $y_i$ 和预测值 $\hat{y}_i$ 时才可使用。

@@ -1,0 +1,64 @@
+# Local environment
+.venv/
+venv/
+.local/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# Paper build outputs
+07_paper/build/
+07_paper/*.aux
+07_paper/*.log
+07_paper/*.out
+07_paper/*.toc
+07_paper/*.synctex.gz
+07_paper/*.pdf
+07_paper/**/*.aux
+07_paper/**/*.log
+07_paper/**/*.out
+07_paper/**/*.toc
+07_paper/**/*.synctex.gz
+07_paper/**/*.pdf
+
+# Generated and large intermediate outputs
+03_processed_data/interim/*
+!03_processed_data/interim/.gitkeep
+05_model_results/tmp/
+05_model_results/cache/
+10_submission_check/reports/
+10_submission_check/sensitive_terms.local.yml
+10_submission_check/sensitive_terms.local.yaml
+
+# Raw data policy
+# Large raw data should stay out of Git and be registered in data_manifest.csv.
+02_raw_data/large/
+02_raw_data/private_backup/
+
+# Final submission policy
+# Only explicitly frozen final files should be kept here.
+11_final_submission/tmp/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+~$*
