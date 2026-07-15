@@ -38,6 +38,7 @@
 \renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
 
 \hypersetup{
+  hypertexnames=false,
   colorlinks=true,
   linkcolor=black,
   citecolor=black,
@@ -58,6 +59,12 @@
 
 \newcommand{\cumcmappendixsetup}{%
   \appendix
-  \renewcommand{\thesection}{附录\Alph{section}}%
-  \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}%
+  \renewcommand{\thesection}{\Alph{section}}%
+  \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}%
+  \ctexset{%
+    section/name={,},%
+    section/number={附录\hspace{-0.2em}\Alph{section}},%
+    subsection/name={,},%
+    subsection/number={附录\hspace{-0.2em}\Alph{section}.\arabic{subsection}}%
+  }%
 }

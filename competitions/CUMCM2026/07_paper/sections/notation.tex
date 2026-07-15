@@ -1,4 +1,4 @@
-﻿\section{符号说明}
+\section{符号说明}
 
 \begin{table}[H]
   \centering
@@ -7,8 +7,21 @@
     \toprule
     符号 & 含义 \\
     \midrule
-    \placeholder{符号} & \placeholder{含义和单位} \\
-    \placeholder{符号} & \placeholder{含义和单位} \\
+    $G=(V,E)$ & 矿井巷道图，$V$ 为端点集合，$E$ 为巷道集合 \\
+    $L_{ij}$ & 巷道 $(i,j)$ 的三维长度，单位 m \\
+    $z_i$ & 端点 $i$ 的高程，单位 m \\
+    $q$ & 突水流量，单位 $\mathrm{m^3/min}$ \\
+    $q_e^{(r)}(t)$ & 水源 $r$ 在时刻 $t$ 对分段 $e$ 的分配流量 \\
+    $b,H$ & 巷道宽度和高度，单位 m \\
+    $h_0,h_s$ & 前锋水深和安全阈值，分别为 $0.1$、$0.3\,\mathrm{m}$ \\
+    $V_e(t)$ & 分段 $e$ 在时刻 $t$ 的累计蓄水体积，单位 $\mathrm{m^3}$ \\
+    $g_e(t)$ & 分段 $e$ 的实际蓄水速率，单位 $\mathrm{m^3/min}$ \\
+    $s_r$ & 水源 $r$ 的启动时刻，单位 min \\
+    $t_i$ & 水流到达端点 $i$ 的时刻，单位 min \\
+    $T_{ij}$ & 巷道 $(i,j)$ 充满水的时刻，单位 min \\
+    $t^{safe}_{e}$ & 分段 $e$ 的累计水量达到安全阈值的时刻 \\
+    $A_e(\tau)$ & 时刻 $\tau$ 进入分段 $e$ 后的到达时刻函数 \\
+    $v_d,v_s,v_u$ & 无水、顺水和逆水逃生速度，单位 $\mathrm{m/min}$ \\
     \bottomrule
   \end{tabular}
 \end{table}

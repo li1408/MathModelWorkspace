@@ -1,10 +1,44 @@
-﻿\section{数据预处理}
+\section{数据预处理}
 
 \subsection{数据来源}
-\placeholder{列出赛题官方附件或经过核验的数据来源，并与 02_raw_data/data_manifest.csv 保持一致。}
+本地原始数据来自题目附件 1、附件 2 和附件 3 的结果模板。程序只读原始文件，
+并通过 SHA256 清单确认输入与冻结结果的一致性。
 
 \subsection{数据清洗}
-\placeholder{说明缺失值、异常值、单位换算和字段标准化规则。所有处理必须能追溯到 04_code 中的脚本。}
+脚本 \texttt{04\_code/02\_data\_cleaning.py} 读取两个矿井的端点表和巷道表，
+过滤端点表中的单位行，并检查端点编号唯一、巷道端点存在、坐标可转换为数值。
+核验结果见表\ref{tab:data-profile}。两个网络均只有一个连通分量。
+
+\begin{table}[H]
+  \centering
+  \caption{矿井网络数据画像}
+  \label{tab:data-profile}
+  \begin{tabular}{ccccc}
+    \toprule
+    矿井 & 有效端点数 & 巷道数 & 连通分量 & 巷道总长/m \\
+    \midrule
+    1 & 663 & 977 & 1 & 125557.097 \\
+    2 & 663 & 977 & 1 & 125624.775 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsection{特征构造}
-\placeholder{说明从原始变量构造模型输入变量的过程。不得填写尚未由代码生成的统计量。}
+对每条巷道，根据两个端点的三维坐标计算长度
+\begin{equation}
+  L_{ij}=\sqrt{(x_i-x_j)^2+(y_i-y_j)^2+(z_i-z_j)^2}.
+\end{equation}
+同时记录高程差 $\Delta z_{ij}=z_j-z_i$。突水点、矿工和出口通过正交投影加入最近巷道；
+若投影与原端点距离小于 $10^{-7}\,\mathrm{m}$，直接吸附到原端点，避免零长度边。
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}\centering
+    \includegraphics[width=\linewidth]{mine1_network.png}\\矿井 1
+  \end{minipage}
+  \begin{minipage}{0.49\textwidth}\centering
+    \includegraphics[width=\linewidth]{mine2_network.png}\\矿井 2
+  \end{minipage}
+  \caption{两矿井巷道拓扑、突水点、出口与矿工位置}
+  \label{fig:networks}
+\end{figure}

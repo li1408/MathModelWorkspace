@@ -21,12 +21,12 @@ latexmk -xelatex main.tex
 
 ```powershell
 xelatex main.tex
-bibtex build/main
+bibtexu build/main
 xelatex main.tex
 xelatex main.tex
 ```
 
-参考文献继续使用 BibTeX 和 `gbt7714-numerical`，不混用 Biber 或 `biblatex`。如果 `gbt7714-numerical.bst` 或 `gbt7714.sty` 无法定位，需要通过 MiKTeX 安装官方包 `gbt7714`，不要从非官方网络来源下载单独的 `.bst` 或 `.sty` 文件。
+参考文献使用 Unicode BibTeX（`bibtexu`）和当前 `gbt7714` 包推荐的 `gbt7714-numeric`，不混用 Biber 或 `biblatex`。旧名 `gbt7714-numerical` 在当前包中是废弃别名，会使 `bibtexu` 返回非零并阻断 `latexmk`。如果样式或 `gbt7714.sty` 无法定位，需要通过 MiKTeX 安装官方包 `gbt7714`，不要从非官方网络来源下载单独的 `.bst` 或 `.sty` 文件。
 
 ## 环境检查
 

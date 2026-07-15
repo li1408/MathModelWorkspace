@@ -17,7 +17,12 @@
 | `08_sensitivity_analysis.py` | 灵敏度和鲁棒性分析。 |
 | `09_generate_figures.py` | 统一生成论文图表。 |
 | `10_export_results.py` | 导出论文可引用结果和支撑材料。 |
-| `run_all.py` | 按顺序运行完整流程，支持 `--dry-run`。 |
+| `run_all.py` | 保留原基线入口，并调度 practice、audit、final 三种可信度 profile。 |
+| `run_context.py` | 生成 `run_id`，隔离结果并保存五类运行追踪文件。 |
+| `flow_strategies.py` | 提供独立分流策略接口及权重合法性验证。 |
+| `quality_gates.py` | 统一 ERROR、WARNING、INFO 结果和退出语义。 |
+| `validation/` | FIFO 数值检验、空间收敛、替代结构比较、集合审计和冷启动复现。 |
+| `reporting/` | 检查结论证据映射和图表 manifest。 |
 
 ## 运行方式
 
@@ -26,6 +31,17 @@
 ```powershell
 .\.venv\Scripts\python.exe .\04_code\run_all.py --dry-run
 ```
+
+无参数命令仍执行原有基线流程。扩展运行示例：
+
+```powershell
+.\.venv\Scripts\python.exe .\04_code\run_all.py --profile audit
+.\.venv\Scripts\python.exe .\04_code\run_all.py --profile audit --stage algorithm_preconditions
+.\.venv\Scripts\python.exe .\04_code\run_all.py --profile audit --from-stage convergence
+.\.venv\Scripts\python.exe .\04_code\run_all.py --profile audit --stages alternatives,comparison_audit
+```
+
+扩展运行结果位于 `05_model_results/runs/<run_id>/`。只有同一 `run_id` 内、对象集合经过审计的结果才可标记为配对比较。
 
 正式比赛开始后，先将原始数据登记到 `02_raw_data/data_manifest.csv`，再逐步启用各模块的真实逻辑。
 
@@ -38,3 +54,5 @@
 - 不允许静默覆盖重要结果。
 - 核心计算不依赖网络。
 - 每个关键函数需要中文说明。
+- 实验参数集中在 `config/experiment_plan.yml`，高风险假设集中在 `config/assumptions_registry.yml`。
+- 检测到 FIFO 违反时必须切换非 FIFO 后备算法；后备算法不可用时不得输出正式路线。

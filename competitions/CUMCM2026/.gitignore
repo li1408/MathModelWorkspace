@@ -14,6 +14,14 @@ __pycache__/
 00_inbox/*
 !00_inbox/README.md
 
+# Local-only official problem materials
+01_problem/*.pdf
+02_raw_data/**/*.xls
+02_raw_data/**/*.xlsx
+02_raw_data/**/*.xlsm
+02_raw_data/**/*.zip
+02_raw_data/**/*.rar
+
 # LaTeX auxiliary files
 *.aux
 *.bbl
@@ -46,8 +54,25 @@ __pycache__/
 # Generated and large intermediate outputs
 03_processed_data/interim/*
 !03_processed_data/interim/.gitkeep
+03_processed_data/final/*
+!03_processed_data/final/.gitkeep
+05_model_results/logs/*
+!05_model_results/logs/.gitkeep
+05_model_results/metrics/*
+!05_model_results/metrics/.gitkeep
+05_model_results/tables/*
+!05_model_results/tables/.gitkeep
 05_model_results/tmp/
 05_model_results/cache/
+05_model_results/runs/*
+!05_model_results/runs/.gitkeep
+06_paper_assets/figures/*
+!06_paper_assets/figures/.gitkeep
+06_paper_assets/figure_metadata/*.json
+!06_paper_assets/figure_metadata/.gitkeep
+08_supporting_materials/model_results/*
+!08_supporting_materials/model_results/.gitkeep
+output/test_tmp/
 10_submission_check/reports/
 10_submission_check/sensitive_terms.local.yml
 10_submission_check/sensitive_terms.local.yaml
@@ -60,6 +85,9 @@ __pycache__/
 # Final submission policy
 # Only explicitly frozen final files should be kept here.
 11_final_submission/tmp/
+
+# Local review packages and intermediate PDFs
+outputs/
 
 # OS/editor noise
 .DS_Store

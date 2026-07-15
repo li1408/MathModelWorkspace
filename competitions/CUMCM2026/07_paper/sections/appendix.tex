@@ -1,8 +1,20 @@
-﻿\subsection{代码文件}
-\placeholder{列出提交时需要说明的核心代码文件、运行顺序和对应论文结论。}
+\subsection{代码文件}
+核心代码包括：
+\begin{itemize}
+  \item \texttt{water\_flow.py}：多源水流事件；
+  \item \texttt{escape\_routing.py}：动态逃生路径；
+  \item \texttt{d\_workflow.py}：四问与验证调度；
+  \item \texttt{output\_writer.py}：官方模板写出。
+\end{itemize}
+在项目根目录执行
+\texttt{python 04\_code/run\_all.py} 即可依次生成 Q1--Q4、验证、灵敏度、图表和支撑材料；
+实际复现命令中的解释器绝对路径见支撑材料运行说明。
 
 \subsection{支撑材料}
-\placeholder{列出支撑材料文件名、用途和与正文的对应关系。}
+八份正式结果位于 \texttt{08\_supporting\_materials/model\_results}；
+\texttt{manifest.csv} 记录文件大小、来源、生成脚本和 SHA256。
+\texttt{code\_snapshot} 保存核心代码与 23 项测试，\texttt{reproduction\_notes/RUNBOOK.md} 给出复现命令。
 
 \subsection{AI 使用记录}
-\placeholder{根据 09_ai_logs 中的记录整理 AI 使用说明，最终格式需依据 2026 年官方要求确认。}
+AI 工具用于代码结构建议、对抗性反例审查、文字整理和格式检查；所有模型公式、代码、数值与结论均由本地测试、
+守恒检验、全流程重跑和人工复核确认。实际提交时按当届竞赛官方要求附交完整使用记录。

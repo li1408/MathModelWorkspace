@@ -181,6 +181,18 @@ class SubmissionCheckTests(unittest.TestCase):
             issues = self.run_checks(root, mode="final")
             self.assertTrue(any(issue.rule == "final_checksum_mismatch" for issue in issues))
 
+    def test_invalid_configuration_returns_exit_code_two(self):
+        temp_dir, root = self.make_root()
+        with temp_dir:
+            (root / "10_submission_check/submission_rules.yml").write_text(
+                "invalid: [unterminated\n",
+                encoding="utf-8",
+            )
+            exit_code = check_submission.main(
+                ["--root", str(root), "--mode", "draft"]
+            )
+            self.assertEqual(exit_code, 2)
+
 
 if __name__ == "__main__":
     unittest.main()

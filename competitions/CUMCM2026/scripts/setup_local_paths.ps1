@@ -141,7 +141,7 @@ Set-Content -Path $perlPathFile -Value $perlBin -Encoding ASCII
 Write-Output "Recorded MiKTeX bin: $miktexBin"
 Write-Output "Recorded Perl bin: $perlBin"
 
-$tools = @("xelatex", "bibtex", "kpsewhich", "miktex", "initexmf", "mpm", "latexmk")
+$tools = @("xelatex", "bibtex", "bibtexu", "kpsewhich", "miktex", "initexmf", "mpm", "latexmk")
 foreach ($tool in $tools) {
     Write-ToolWrapper `
         -Name $tool `

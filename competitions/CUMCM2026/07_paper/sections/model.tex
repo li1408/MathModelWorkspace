@@ -1,19 +1,82 @@
-﻿\section{模型建立}
+\section{模型建立}
 
-\subsection{决策变量与参数}
-\placeholder{定义决策变量、状态变量、参数和约束集合。}
-
-\subsection{目标函数}
-在明确优化目标后，可将模型写为
+\subsection{源点投影与分层定向}
+将矿井写为图 $G=(V,E)$。水源 $r$ 位于巷道内部时，在投影点插入虚拟节点并把原巷道拆为若干水力分段。
+对每个水源分别定义名义到达势
 \begin{equation}
-  \min_{\bm{x}\in\Omega} F(\bm{x})
-  = \placeholder{目标函数表达式}.
+  \pi_i^{(r)}=s_r+\frac{d_G(r,i)}{q/(bh_0)},
 \end{equation}
-\placeholder{用真实建模推导替换上式中的占位表达式。}
+其中 $d_G$ 为按三维长度计算的图距离。非水平边始终由高端指向低端；水平边由较小势指向较大势，
+相同势时按节点编号打破平局。由此每个水源得到一个有向无环传播层。多水源层共享分段容量，
+但不把后到水源压缩成单一“最早到达”标签。
 
-\subsection{约束条件}
-模型约束可统一表示为
+\subsection{守恒的分段蓄水--传递模型}
+对水源 $r$ 的节点 $i$，设时刻 $t$ 的入流为 $Q_i^{(r)}(t)$，仍可蓄水或向下游传递的出边集合为
+$\Gamma_i^{(r)}(t)$。采用平均分流
 \begin{equation}
-  g_i(\bm{x}) \leq 0,\quad i=1,2,\ldots,m.
+ q_e^{(r)}(t)=\frac{Q_i^{(r)}(t)}{|\Gamma_i^{(r)}(t)|},
+ \qquad e\in\Gamma_i^{(r)}(t).
 \end{equation}
-\placeholder{根据赛题条件写出具体约束，不得引入未经说明的限制。}
+若延迟水源所在节点同时存在顺既有来流和逆既有来流的候选边，则优先选择不对冲的候选边；
+若只有反向未满边，则允许从另一端回蓄，从而避免延迟水源被错误记为“阻塞”而不参与传播。
+
+长度为 $L_e$ 的分段设置三个体积阈值
+\begin{equation}
+ V_e^{\rm front}=bh_0L_e,\qquad
+ V_e^{\rm safe}=bh_sL_e,\qquad
+ V_e^{\rm full}=bHL_e.
+ \label{eq:thresholds}
+\end{equation}
+当 $V_e<V_e^{\rm front}$ 时，入流用于推动 $0.1\,\mathrm{m}$ 水深前锋；前锋到达下游后，
+若下游仍能容纳水量，则流量继续传递，否则回蓄本段直至充满。令
+$\chi_e^{(r)}(t)\in\{0,1\}$ 表示水源 $r$ 分配到分段 $e$ 的流量在当前状态下是否用于蓄水，
+则实际蓄水速率为 $g_e(t)=\sum_r\chi_e^{(r)}(t)q_e^{(r)}(t)$。状态不变的时间区间内，累计水量按
+\begin{equation}
+ V_e(t+\Delta t)=\min\left\{V_e^{\rm full},
+ V_e(t)+\Delta t\,g_e(t)\right\}
+ \label{eq:volume-update}
+\end{equation}
+精确推进到下一个阈值或水源启动事件；用于向下游传递的流量不重复计入本段蓄水。
+每次事件后重新计算可接受子图、分流与汇流。
+
+设 $V_{\rm block}(t)$ 为所有巷道饱和后在模型边界累积的水量，则全局守恒关系为
+\begin{equation}
+ \sum_e V_e(t)+V_{\rm block}(t)
+ =\sum_r q_r(t-s_r)_+.
+ \label{eq:mass}
+\end{equation}
+官方巷道若被虚拟节点拆分，其进水时刻取各段最小值；只有全部分段均充满时才报告整条巷道充满，
+且时刻取各段最大值。若任一分段未充满，结果表对应单元格留空。
+
+\subsection{局部水向与时间依赖通行}
+相向水流可能使同一原巷道两侧方向不同，因此不使用整条巷道的单一方向标签。
+对位置 $x$ 所属水力分段，按各水源有符号流量之和确定局部净水向 $\sigma_e(x,t)\in\{-1,0,1\}$。
+矿工运动方向与其一致时视为顺水；局部净流为零时按较保守的逆水速度处理。
+
+设矿工在 $\tau$ 时刻进入分段，速度函数为
+\begin{equation}
+v_e(t)=
+\begin{cases}
+240, & t<t_e^{\rm entry},\\
+120, & t_e^{\rm entry}\le t<t_e^{\rm safe},\ \text{且顺水},\\
+60, & t_e^{\rm entry}\le t<t_e^{\rm safe},\ \text{且逆水或净流为零},\\
+0, & t\ge t_e^{\rm safe},
+\end{cases}
+\end{equation}
+单位均为 $\mathrm{m/min}$。到达函数 $A_e(\tau)$ 由
+\begin{equation}
+ \int_{\tau}^{A_e(\tau)}v_e(t)\,\mathrm dt=L_e
+ \label{eq:travel-integral}
+\end{equation}
+确定；若在积分完成前达到安全阈值，则该边不可行。程序在进水、流向改变和安全阈值事件处切分积分，
+不再用进入时刻的一次判速代替整个穿越过程。
+
+\subsection{最早到达与二次重规划}
+静态最短路的经典标号思想源于 Dijkstra 算法\cite{dijkstra1959}；对出发时刻相关的边到达函数，
+采用时间依赖标号更新\cite{dreyfus1969}
+\begin{equation}
+ T_j=\min_{e=(i,j)} A_e(T_i).
+\end{equation}
+由于矿工不等待，且同方向的时变速度场不能使后出发者先到达分段终点，边到达函数满足 FIFO 条件。
+问题四先从 $t=1\,\mathrm{min}$ 起沿 Q2 路线在 Q3 水况中逐段复演，分别推进至 $t=5$、$6\,\mathrm{min}$，
+再以复演位置为新起点重新标号；最终输出由原路径前缀、调整点和新路径后缀组成。

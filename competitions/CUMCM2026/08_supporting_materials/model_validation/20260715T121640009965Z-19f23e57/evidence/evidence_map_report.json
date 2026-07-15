@@ -1,0 +1,9 @@
+{
+  "stage": "evidence_map",
+  "issues": [],
+  "metrics": {
+    "claim_count": 0,
+    "evidence_link_count": 0,
+    "verified_claim_count": 0
+  }
+}

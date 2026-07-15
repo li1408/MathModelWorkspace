@@ -1,0 +1,54 @@
+{
+  "report_kind": "FIFO numerical inspection; this is not a mathematical proof.",
+  "conclusion": "数值检验未发现 FIFO 违反",
+  "directed_edges_checked": 7828,
+  "sample_count": 244468,
+  "violation_count": 0,
+  "max_violation_min": 0.0,
+  "violating_edge_ids": [],
+  "scenarios": [
+    {
+      "mine_id": 1,
+      "scenario": "single_source",
+      "directed_edges_checked": 1956,
+      "sample_count": 58624,
+      "violation_count": 0,
+      "max_violation_min": 0.0,
+      "violating_edge_ids": [],
+      "details": []
+    },
+    {
+      "mine_id": 1,
+      "scenario": "dual_source",
+      "directed_edges_checked": 1958,
+      "sample_count": 91830,
+      "violation_count": 0,
+      "max_violation_min": 0.0,
+      "violating_edge_ids": [],
+      "details": []
+    },
+    {
+      "mine_id": 2,
+      "scenario": "single_source",
+      "directed_edges_checked": 1956,
+      "sample_count": 46296,
+      "violation_count": 0,
+      "max_violation_min": 0.0,
+      "violating_edge_ids": [],
+      "details": []
+    },
+    {
+      "mine_id": 2,
+      "scenario": "dual_source",
+      "directed_edges_checked": 1958,
+      "sample_count": 47718,
+      "violation_count": 0,
+      "max_violation_min": 0.0,
+      "violating_edge_ids": [],
+      "details": []
+    }
+  ],
+  "issues": [],
+  "routing_algorithm_selected": "dijkstra",
+  "formal_routes_allowed": true
+}

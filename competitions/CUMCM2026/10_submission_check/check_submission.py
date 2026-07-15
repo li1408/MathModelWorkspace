@@ -20,13 +20,18 @@ except ImportError:  # pragma: no cover
     yaml = None
 
 
+CODE_DIR = Path(__file__).resolve().parents[1] / "04_code"
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+
 SEVERITIES = ("ERROR", "WARNING", "INFO")
 PLACEHOLDER_RE = re.compile(r"\[\[PLACEHOLDER:[^\]]*\]\]")
 PLACEHOLDER_MACRO_RE = re.compile(
     r"\\(?:placeholder|cumcmplaceholder|cumcminlineplaceholder|cumcmmathplaceholder)\{([^}]*)\}"
 )
 ABSOLUTE_PATH_RE = re.compile(
-    r"([A-Za-z]:\\[^\s\]\)\}\"']+|/(?:Users|home|mnt|var|tmp)/[^\s\]\)\}\"']+)"
+    r"((?<![A-Za-z0-9_])[A-Za-z]:\\[^\\\s\]\)\}\"']+\\[^\s\]\)\}\"']+|/(?:Users|home|mnt|var|tmp)/[^\s\]\)\}\"']+)"
 )
 INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
 GRAPHICS_RE = re.compile(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}")
@@ -441,7 +446,11 @@ def scan_generated_files(
             add_issue(issues, allow_entries, "ERROR", "large_file", rel, "File exceeds error size limit.", rel)
         elif size >= warning_bytes:
             add_issue(issues, allow_entries, "WARNING", "large_file", rel, "File exceeds warning size limit.", rel)
-        if size == 0 and any(path.is_relative_to(output_dir) for output_dir in output_dirs):
+        if (
+            size == 0
+            and path.name != ".gitkeep"
+            and any(path.is_relative_to(output_dir) for output_dir in output_dirs)
+        ):
             add_issue(issues, allow_entries, "WARNING", "empty_output", rel, "Empty output file found.", rel)
 
 
@@ -552,6 +561,157 @@ def check_local_rules(
             )
 
 
+def _add_gate_issues(
+    gate_issues: Iterable[Any],
+    allow_entries: list[dict[str, Any]],
+    issues: list[Issue],
+) -> None:
+    for gate in gate_issues:
+        details = getattr(gate, "details", {}) or {}
+        match = str(
+            details.get("assumption_id")
+            or details.get("claim_id")
+            or details.get("evidence_id")
+            or details.get("figure_id")
+            or ""
+        )
+        add_issue(
+            issues,
+            allow_entries,
+            gate.severity,
+            gate.rule,
+            gate.path or "model_trust",
+            gate.message,
+            match,
+        )
+
+
+def check_model_trust(
+    root: Path,
+    rules: dict[str, Any],
+    allow_entries: list[dict[str, Any]],
+    issues: list[Issue],
+    mode: str,
+) -> None:
+    config = rules.get("model_trust")
+    if not isinstance(config, dict):
+        return
+    profile = "final" if mode == "final" else "audit"
+    try:
+        from quality_gates import assumption_gate_issues, validate_assumptions_registry
+        from reporting.generate_claim_evidence_map import validate_evidence_tables
+        from reporting.validate_figure_manifest import validate_figure_manifest
+
+        assumptions_rel = config.get("assumptions_registry")
+        if assumptions_rel:
+            assumptions_path = root / assumptions_rel
+            if not assumptions_path.is_file():
+                add_issue(
+                    issues,
+                    allow_entries,
+                    "ERROR" if mode == "final" else "WARNING",
+                    "assumptions_registry_missing",
+                    assumptions_rel,
+                    "Assumption risk registry is missing.",
+                    assumptions_rel,
+                )
+            else:
+                registry = load_yaml(assumptions_path)
+                validate_assumptions_registry(registry)
+                _add_gate_issues(assumption_gate_issues(registry, profile), allow_entries, issues)
+
+        claims_rel = config.get("claims")
+        links_rel = config.get("evidence_links")
+        if claims_rel and links_rel:
+            evidence_report = validate_evidence_tables(
+                root,
+                root / claims_rel,
+                root / links_rel,
+                profile=profile,
+            )
+            _add_gate_issues(evidence_report.issues, allow_entries, issues)
+
+        figure_rel = config.get("figure_manifest")
+        if figure_rel:
+            figure_report = validate_figure_manifest(root, profile=profile, write_metadata=False)
+            _add_gate_issues(figure_report.issues, allow_entries, issues)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise ConfigError(f"Invalid model-trust configuration: {exc}") from exc
+
+    source_run_file_rel = config.get("final_source_run_id_file")
+    if mode != "final" or not source_run_file_rel:
+        return
+    source_run_file = root / source_run_file_rel
+    if not source_run_file.is_file():
+        add_issue(
+            issues,
+            allow_entries,
+            "ERROR",
+            "final_source_run_missing",
+            source_run_file_rel,
+            "Final submission has no registered source_run_id.",
+            source_run_file_rel,
+        )
+        return
+    source_run_id = source_run_file.read_text(encoding="utf-8").strip()
+    if not source_run_id or any(char in source_run_id for char in "/\\"):
+        add_issue(
+            issues,
+            allow_entries,
+            "ERROR",
+            "final_source_run_invalid",
+            source_run_file_rel,
+            "source_run_id is empty or invalid.",
+            source_run_id,
+        )
+        return
+    run_dir = root / "05_model_results" / "runs" / source_run_id
+    stage_path = run_dir / "stage_report.json"
+    manifest_path = run_dir / "run_manifest.json"
+    if not stage_path.is_file() or not manifest_path.is_file():
+        add_issue(
+            issues,
+            allow_entries,
+            "ERROR",
+            "final_source_run_artifacts_missing",
+            source_run_file_rel,
+            "The registered source run lacks its manifest or stage report.",
+            source_run_id,
+        )
+        return
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        stage_report = json.loads(stage_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ConfigError(f"Invalid source-run JSON: {exc}") from exc
+    if manifest.get("status") != "completed":
+        add_issue(
+            issues,
+            allow_entries,
+            "ERROR",
+            "final_source_run_incomplete",
+            relpath(root, manifest_path),
+            "The registered source run is not completed.",
+            source_run_id,
+        )
+    if config.get("require_cold_reproduction_in_final", True):
+        cold = [
+            stage
+            for stage in stage_report.get("stages", [])
+            if stage.get("name") == "cold_reproduction"
+        ]
+        if not cold or cold[-1].get("status") != "completed":
+            add_issue(
+                issues,
+                allow_entries,
+                "ERROR",
+                "cold_reproduction_missing_or_failed",
+                relpath(root, stage_path),
+                "Final source run did not complete cold reproduction.",
+                source_run_id,
+            )
+
+
 def run_checks(
     root: Path,
     mode: str,
@@ -574,6 +734,7 @@ def run_checks(
     scan_generated_files(root, rules, allow_entries, issues)
     check_pdf_limits(root, rules, allow_entries, issues)
     check_local_rules(rules, allow_entries, issues)
+    check_model_trust(root, rules, allow_entries, issues, mode)
     if mode == "final":
         verify_final_checksums(root, rules, allow_entries, issues)
     return sorted(issues, key=lambda item: (SEVERITIES.index(item.severity), item.rule, item.path, item.match))

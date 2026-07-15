@@ -1,0 +1,91 @@
+{
+  "stage": "figures",
+  "issues": [
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine1_network.png",
+      "details": {
+        "figure_id": "FIG-NET-01"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine1_q2_routes.png",
+      "details": {
+        "figure_id": "FIG-Q2-01"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine1_q4_routes.png",
+      "details": {
+        "figure_id": "FIG-Q4-01"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine1_water_arrival.png",
+      "details": {
+        "figure_id": "FIG-WATER-01"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine2_network.png",
+      "details": {
+        "figure_id": "FIG-NET-02"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine2_q2_routes.png",
+      "details": {
+        "figure_id": "FIG-Q2-02"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine2_q4_routes.png",
+      "details": {
+        "figure_id": "FIG-Q4-02"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/mine2_water_arrival.png",
+      "details": {
+        "figure_id": "FIG-WATER-02"
+      }
+    },
+    {
+      "severity": "WARNING",
+      "rule": "figure_human_review_missing",
+      "message": "A paper-referenced figure has not completed human review.",
+      "path": "06_paper_assets/figures/sensitivity_summary.png",
+      "details": {
+        "figure_id": "FIG-SENS-01"
+      }
+    }
+  ],
+  "metrics": {
+    "manifest_figure_count": 9,
+    "latex_referenced_figure_count": 9,
+    "notice": "Technical checks cannot determine whether a figure truly supports a paper claim; human review remains required."
+  }
+}

@@ -32,12 +32,12 @@
 
 当前项目使用：
 
-- MiKTeX Portable：`E:\Tools\MiKTeXPortable-CUMCM`
-- Strawberry Perl：`E:\Tools\Strawberry`
+- MiKTeX：真实目录记录在 `.local/miktex-bin.path`
+- Perl：真实目录记录在 `.local/perl-bin.path`
 - Python 虚拟环境：项目根目录 `.venv/`
 - 临时文件和工具缓存：项目根目录 `.local/`
 
-`C:\Strawberry` 和用户 MiKTeX 路径若存在，仅作为指向 E 盘的 junction；项目包装器直接调用 E 盘真实路径。
+项目包装器直接读取上述路径文件，论文和支撑材料中不写入机器绝对路径。
 
 ## 论文编译
 
@@ -61,6 +61,38 @@ VS Code 默认解释器为 `.venv/Scripts/python.exe`。pip、Python 临时文�
 ```powershell
 .\.venv\Scripts\python.exe 04_code\run_all.py --dry-run
 ```
+
+运行模型不变量与输出合同测试：
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s 04_code\tests -p 'test_*.py' -v
+```
+
+测试使用 Python 标准库 `unittest`，无需额外安装 `pytest`。完整实跑使用：
+
+```powershell
+.\.venv\Scripts\python.exe 04_code\run_all.py
+```
+
+无参数命令保持原有 Q1--Q4 基线流程，不会自动运行耗时的替代模型、空间收敛或冷启动复现。需要检查模型可信度时使用：
+
+```powershell
+# 日常基线与论文输出
+.\.venv\Scripts\python.exe 04_code\run_all.py --profile practice
+
+# 替代模型、FIFO、收敛、比较审计和证据链
+.\.venv\Scripts\python.exe 04_code\run_all.py --profile audit
+
+# 增加冷启动、严格证据和提交门禁
+$env:CUMCM_INPUT_ROOT = (Resolve-Path 02_raw_data)
+.\.venv\Scripts\python.exe 04_code\run_all.py --profile final
+```
+
+每次显式 profile 运行都会生成唯一 `run_id`，结果隔离到 `05_model_results/runs/<run_id>/`，并保存运行清单、配置快照、输入校验值、环境信息和阶段报告。该目录可能包含大文件，默认不进入 Git，并始终保存在本项目所在的 E 盘。
+
+阶段选择规则：`--stage <name>` 只运行一个阶段；`--from-stage <name>` 从指定阶段运行到 profile 末尾；`--stages a,b,c` 只运行显式列表。三者不能混用。可用 `--run-id <id>` 继续同一次隔离运行。
+
+论文重要结论登记在 `07_paper/evidence/claims.csv`，证据链接登记在 `evidence_links.csv`。图表技术信息和人工复核状态登记在 `06_paper_assets/figure_manifest.csv`。脚本只核对文件、指标和校验值，不能替代人工判断模型与图表是否真正支持结论。
 
 原始数据只放入 `02_raw_data/`，不得原地覆盖。大文件必须登记 `data_manifest.csv`、记录 SHA256，并至少保留一份本地或私有备份。
 

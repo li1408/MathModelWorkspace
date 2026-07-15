@@ -63,6 +63,7 @@ scan:
     - ".local"
     - "resources"
     - "07_paper/build"
+    - "05_model_results/runs"
     - "10_submission_check/reports"
     - "10_submission_check/tests"
   latex_aux_extensions:
@@ -100,6 +101,15 @@ latex:
     - ".png"
     - ".jpg"
     - ".jpeg"
+
+model_trust:
+  assumptions_registry: "04_code/config/assumptions_registry.yml"
+  experiment_plan: "04_code/config/experiment_plan.yml"
+  claims: "07_paper/evidence/claims.csv"
+  evidence_links: "07_paper/evidence/evidence_links.csv"
+  figure_manifest: "06_paper_assets/figure_manifest.csv"
+  final_source_run_id_file: "11_final_submission/source_run_id.txt"
+  require_cold_reproduction_in_final: true
 
 final:
   checksums_file: "11_final_submission/checksums.sha256"

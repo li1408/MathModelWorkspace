@@ -1,0 +1,66 @@
+plan_version: 1
+
+baseline:
+  flow_strategy: equal
+  source_flow_m3_per_min: 30.0
+  safe_depth_m: 0.3
+  tunnel_width_m: 4.0
+  tunnel_height_m: 3.0
+  initial_water_depth_m: 0.1
+  routing_algorithm: auto
+
+alternative_flow_rules:
+  enabled_strategies: [equal, slope_weighted, capacity_weighted]
+  baseline_strategy: equal
+  scenarios: [single_source, dual_source]
+
+fifo_validation:
+  horizon_min: 180.0
+  samples_per_interval: 5
+  event_boundary_epsilon_min: 0.000001
+  adaptive_max_depth: 3
+  violation_tolerance_min: 0.000000001
+  refinement_margin_min: 0.0001
+  routing_algorithm: auto
+  non_fifo_fallback: null
+
+spatial_convergence:
+  # The three scales bracket the observed edge-length distribution while keeping audit runtime practical.
+  max_segment_lengths_m: [400.0, 200.0, 100.0]
+  deterministic: true
+  reference: finest_completed
+  thresholds:
+    max_relative_error: 0.05
+    rmse_min: 0.5
+    min_coverage_jaccard: 0.95
+    min_exit_consistency: 1.0
+    min_route_overlap: 0.9
+
+parameter_sensitivity:
+  flow_multipliers: [0.9, 1.0, 1.1]
+  second_source_delay_offsets_min: [-1.0, 0.0, 1.0]
+  speed_multipliers: [0.9, 1.0, 1.1]
+  safe_depths_m: [0.25, 0.3, 0.35]
+
+structural_sensitivity:
+  flow_strategies: [equal, slope_weighted, capacity_weighted]
+  report_decision_changes: true
+
+matched_set_comparison:
+  paired_only_when_identical_object_sets: true
+  warning_common_fraction_below: 0.9
+
+figure_quality:
+  minimum_dpi: 200
+  minimum_width_px: 1200
+  minimum_height_px: 800
+  require_human_review_in_final: true
+
+cold_reproduction:
+  modes: [smoke_fixture, full_local]
+  temporary_root: 05_model_results/runs
+  input_environment_variable: CUMCM_INPUT_ROOT
+  compare:
+    csv_json: exact_sha256
+    excel: content_and_contract
+    pdf: compile_pages_and_text

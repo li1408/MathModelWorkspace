@@ -4,11 +4,10 @@
 
 \usepackage{cumcm2026}
 
-% Set this to \usereferencestrue only after adding and citing real sources.
 \newif\ifusereferences
-\usereferencesfalse
+\usereferencestrue
 
-\title{\placeholder{论文题目}}
+\title{矿井突水水流漫延模型与逃生方案}
 \author{}
 \date{}
 
@@ -21,7 +20,7 @@
 \input{sections/abstract}
 \end{abstract}
 
-\noindent\textbf{关键词：}\placeholder{关键词1；关键词2；关键词3}
+\noindent\textbf{关键词：}事件驱动仿真；图论；时间依赖最短路；单因素灵敏度分析；鲁棒性分析
 
 \clearpage
 \setcounter{page}{1}
@@ -36,14 +35,18 @@
 \input{sections/sensitivity}
 \input{sections/conclusion}
 
-\section{参考文献}
 \ifusereferences
-  \bibliographystyle{gbt7714-numerical}
+  \begingroup
+  \footnotesize
+  \linespread{1.0}\selectfont
+  \let\cumcmorigbibitem\bibitem
+  \renewcommand{\bibitem}[2][]{\cumcmorigbibitem{#2}}
+  \bibliographystyle{gbt7714-numeric}
   \bibliography{references}
-\else
-  \placeholder{添加正文真实引用过的文献后，将文首的参考文献开关改为 true。不得保留虚构文献、未读文献或未引用文献。}
+  \endgroup
 \fi
 
+\clearpage
 \cumcmappendixsetup
 \section{代码与支撑材料说明}
 \input{sections/appendix}

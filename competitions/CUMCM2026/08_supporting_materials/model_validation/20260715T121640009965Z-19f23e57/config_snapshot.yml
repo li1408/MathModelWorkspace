@@ -1,0 +1,206 @@
+schema_version: 1
+captured_at: '2026-07-15T12:16:40.020Z'
+assumptions_registry:
+  registry_version: 1
+  status_values:
+  - unreviewed
+  - validated
+  - bounded
+  - robust_under_alternatives
+  - accepted_with_limitation
+  - not_applicable
+  - unresolved
+  assumptions:
+  - assumption_id: ASM-FLOW-001
+    name: 分叉平均分流
+    description: 分叉节点的入流在所有当前可接纳的下游巷道之间等比例分配。
+    source: 当前练习题基线模型设计
+    rationale: 题面未给出各分支水力阻力和断面差异，平均分流作为可审计的基线近似。
+    risk_level: high
+    affected_outputs:
+    - Q1
+    - Q2
+    - Q3
+    - Q4
+    - water_arrival
+    - escape_routes
+    validation_methods:
+    - alternative_flow_rules
+    - structural_sensitivity
+    - mass_balance
+    alternative_models:
+    - slope_weighted
+    - capacity_weighted
+    fallback_action: 若主要覆盖范围或逃生出口改变，则论文只报告稳健结论并明确结构不确定性。
+    paper_section: 模型假设与模型评价
+    owner: modeling_team
+    status: unreviewed
+    decision_impact: 可能改变水流到达时刻、覆盖范围和推荐出口。
+    evidence_ids: []
+    literature_refs: []
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+  - assumption_id: ASM-DIR-001
+    name: 非水平边只允许高端向低端传播
+    description: 存在明显高程差的巷道只允许水流由高端向低端传播。
+    source: 当前练习题基线模型设计
+    rationale: 缺少压力水头和泵送条件时，以重力方向作为可解释的传播约束。
+    risk_level: high
+    affected_outputs:
+    - Q1
+    - Q2
+    - Q3
+    - Q4
+    - reachable_edges
+    validation_methods:
+    - structural_sensitivity
+    - alternative_orientation_rules
+    alternative_models:
+    - bidirectional_head_approximation
+    fallback_action: 若放宽方向后主要决策改变，则停止把单向传播结论表述为确定结论。
+    paper_section: 模型假设与水流传播模型
+    owner: modeling_team
+    status: unreviewed
+    decision_impact: 可能改变可达巷道集合及逃生路线可行性。
+    evidence_ids: []
+    literature_refs: []
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+  - assumption_id: ASM-DIR-002
+    name: 水平边按名义势定向
+    description: 水平巷道按水源名义到达势和稳定编号次序确定无环传播方向。
+    source: 当前练习题基线模型设计
+    rationale: 在缺少局部压力和坡度信息时，需要确定性方向以避免循环传播。
+    risk_level: high
+    affected_outputs:
+    - Q1
+    - Q2
+    - Q3
+    - Q4
+    - horizontal_edge_flow
+    validation_methods:
+    - structural_sensitivity
+    - orientation_perturbation
+    alternative_models:
+    - bidirectional_horizontal_flow
+    - tie_break_perturbation
+    fallback_action: 若不同水平边定向改变主要决策，则将相关结论标记为方向规则敏感。
+    paper_section: 水流传播模型与模型局限
+    owner: modeling_team
+    status: unreviewed
+    decision_impact: 可能改变水平巷道的传播顺序和路线安全窗口。
+    evidence_ids: []
+    literature_refs: []
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+  - assumption_id: ASM-ROUTE-001
+    name: 时间依赖边满足 FIFO
+    description: 更晚进入同一有向巷道的人员不会比更早进入者更早离开该巷道。
+    source: 当前时间依赖最短路算法前置条件
+    rationale: 普通时间依赖 Dijkstra 的有效性依赖 FIFO 条件。
+    risk_level: high
+    affected_outputs:
+    - Q2
+    - Q4
+    - escape_routes
+    validation_methods:
+    - fifo_validation
+    - event_boundary_sampling
+    - adaptive_sampling
+    alternative_models:
+    - non_fifo_fallback_routing
+    fallback_action: 检测到违反时自动停用依赖 FIFO 的算法；后备算法不可用则阻断正式路线输出。
+    paper_section: 逃生路径模型与算法有效性
+    owner: algorithm_team
+    status: unreviewed
+    decision_impact: 直接决定当前最短路算法能否用于正式路线结论。
+    evidence_ids: []
+    literature_refs: []
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+experiment_plan:
+  plan_version: 1
+  baseline:
+    flow_strategy: equal
+    source_flow_m3_per_min: 30.0
+    safe_depth_m: 0.3
+    tunnel_width_m: 4.0
+    tunnel_height_m: 3.0
+    initial_water_depth_m: 0.1
+    routing_algorithm: auto
+  alternative_flow_rules:
+    enabled_strategies:
+    - equal
+    - slope_weighted
+    - capacity_weighted
+    baseline_strategy: equal
+    scenarios:
+    - single_source
+    - dual_source
+  fifo_validation:
+    horizon_min: 180.0
+    samples_per_interval: 5
+    event_boundary_epsilon_min: 1.0e-06
+    adaptive_max_depth: 3
+    violation_tolerance_min: 1.0e-09
+    refinement_margin_min: 0.0001
+    routing_algorithm: auto
+    non_fifo_fallback: null
+  spatial_convergence:
+    max_segment_lengths_m:
+    - 400.0
+    - 200.0
+    - 100.0
+    deterministic: true
+    reference: finest_completed
+    thresholds:
+      max_relative_error: 0.05
+      rmse_min: 0.5
+      min_coverage_jaccard: 0.95
+      min_exit_consistency: 1.0
+      min_route_overlap: 0.9
+  parameter_sensitivity:
+    flow_multipliers:
+    - 0.9
+    - 1.0
+    - 1.1
+    second_source_delay_offsets_min:
+    - -1.0
+    - 0.0
+    - 1.0
+    speed_multipliers:
+    - 0.9
+    - 1.0
+    - 1.1
+    safe_depths_m:
+    - 0.25
+    - 0.3
+    - 0.35
+  structural_sensitivity:
+    flow_strategies:
+    - equal
+    - slope_weighted
+    - capacity_weighted
+    report_decision_changes: true
+  matched_set_comparison:
+    paired_only_when_identical_object_sets: true
+    warning_common_fraction_below: 0.9
+  figure_quality:
+    minimum_dpi: 200
+    minimum_width_px: 1200
+    minimum_height_px: 800
+    require_human_review_in_final: true
+  cold_reproduction:
+    modes:
+    - smoke_fixture
+    - full_local
+    temporary_root: 05_model_results/runs
+    input_environment_variable: CUMCM_INPUT_ROOT
+    compare:
+      csv_json: exact_sha256
+      excel: content_and_contract
+      pdf: compile_pages_and_text

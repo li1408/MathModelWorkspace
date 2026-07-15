@@ -1,14 +1,109 @@
-﻿\section{模型求解}
+\section{模型求解}
 
-\subsection{求解流程}
-\placeholder{说明算法流程、输入文件、输出文件和随机种子设置。}
+\subsection{求解流程与复杂度}
+完整流程由 \texttt{04\_code/run\_all.py} 调度，依次执行数据核验、标准化、Q1--Q4、
+结果校验、灵敏度分析、图表生成和支撑材料导出。核心实现由水流事件队列和时间依赖标签队列组成。
+设扩展图规模为 $|V'|,|E'|$，每个水源层的定向和拓扑传播为 $O(|V'|+|E'|)$；
+事件数由水源启动及每段的前锋、安全、充满阈值限定。最短路使用二叉堆，
+单次复杂度为 $O((|V'|+|E'|)\log |V'|)$。
 
-\subsection{计算实现}
-最优解或候选解可记为
-\begin{equation}
-  \hat{\bm{x}} = \arg\min_{\bm{x}\in\Omega} F(\bm{x}).
-\end{equation}
-\placeholder{填写由 04_code 中脚本生成并核验过的求解结果。当前不得填写虚构数值。}
+主要文件为：
+\begin{itemize}
+  \item \texttt{data\_io.py} 与 \texttt{graph\_utils.py}：读数、建图和投影拆边；
+  \item \texttt{water\_flow.py}：多源传播层、体积事件和质量守恒；
+  \item \texttt{escape\_routing.py}：局部水向、分段通行积分和最早到达；
+  \item \texttt{output\_writer.py}：复制官方模板并回填正式巷道编号。
+\end{itemize}
+
+计算采用 Python 3.10，所有结果均由同一入口无人工改表生成。结果工作簿保留官方模板的工作表、
+合并单元格、列宽与两位小数格式，虚拟边在提交表中还原为正式 $H\mathrm{xxxx}$ 编号。
 
 \section{结果分析}
-\placeholder{分析真实输出的表格、图像和指标。论文中引用的图表必须实际存在于 06_paper_assets 或 tables 相关目录。}
+\subsection{问题一与问题三：水流漫延}
+表\ref{tab:water-results} 给出原始端点和正式巷道口径下的结果。矿井 1 在单源下最终覆盖整个连通网络，
+但深层支路经过多级等分后流量较小，因而形成长尾；矿井 2 的高程结构使单源只覆盖局部子图，
+空白单元格表示模型判定水流未到达或巷道未全部充满，并非漏算。
+
+\begin{table}[H]
+\centering
+\caption{Q1/Q3 水流漫延结果汇总}
+\label{tab:water-results}
+\begin{tabular}{ccccccc}
+\toprule
+问题 & 矿井 & 可达端点 & 充满巷道 & 端点中位/min & 端点最大/min & 充满最大/min\\
+\midrule
+Q1 & 1 & 663 & 977 & 5097.59 & 44716.03 & 50222.84\\
+Q3 & 1 & 663 & 977 & 861.84 & 23965.59 & 25113.42\\
+Q1 & 2 & 28 & 39 & 45.01 & 1395.16 & 2807.33\\
+Q3 & 2 & 41 & 53 & 47.08 & 1395.16 & 2807.33\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+矿井 1 加入第二水源后覆盖范围不变，但端点中位到达、最大到达、巷道中位充满和最大充满时刻
+分别下降 $83.09\%$、$46.40\%$、$56.93\%$、$50.00\%$。矿井 2 新增 13 个可达端点和
+14 条充满巷道，增幅分别为 $46.43\%$、$35.90\%$。图\ref{fig:water-arrival} 以对数色标展示长尾和双源加速区域。
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}\centering
+    \includegraphics[width=\linewidth]{mine1_water_arrival.png}\\矿井 1
+  \end{minipage}
+  \begin{minipage}{0.49\textwidth}\centering
+    \includegraphics[width=\linewidth]{mine2_water_arrival.png}\\矿井 2
+  \end{minipage}
+  \caption{Q1 与 Q3 的端点最早到达时刻分布}
+  \label{fig:water-arrival}
+\end{figure}
+
+\subsection{问题二：首次通知后的逃生路线}
+六名矿工均在水深约束下到达出口 1，结果见表\ref{tab:q2}。到达时刻为 $12.17$--$19.20\,\mathrm{min}$。
+
+\begin{table}[H]
+\centering
+\caption{Q2 逃生结果}
+\label{tab:q2}
+\begin{tabular}{ccccc}
+\toprule
+矿井 & 矿工 & 到达时刻/min & 路线长度/m & 出口\\
+\midrule
+1&1&15.880&3571.2&1\\ 1&2&12.170&2680.9&1\\ 1&3&18.104&4104.9&1\\
+2&1&12.198&2687.5&1\\ 2&2&18.132&4111.6&1\\ 2&3&19.201&3442.9&1\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{mine1_q2_routes.png}\end{minipage}
+  \begin{minipage}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{mine2_q2_routes.png}\end{minipage}
+  \caption{问题二两矿井逃生路线}
+\end{figure}
+
+\subsection{问题四：双源条件下的动态调整}
+表\ref{tab:q4} 给出从首次通知时刻起的完整路线，而非只给调整后的余程。
+矿井 1 的矿工 1、3和矿井 2 的矿工 2、3改走出口 2，说明新增水源改变了出口选择。
+
+\begin{table}[H]
+\centering
+\caption{Q4 动态重规划结果}
+\label{tab:q4}
+\begin{tabular}{cccccc}
+\toprule
+矿井&矿工&调整时刻/min&到达时刻/min&路线长度/m&出口\\
+\midrule
+1&1&5&16.454&3709.0&2\\ 1&2&5&15.233&2731.9&1\\ 1&3&5&18.502&4200.6&2\\
+2&1&6&12.425&2739.1&1\\ 2&2&6&18.504&4200.9&2\\ 2&3&6&19.746&3573.8&2\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+若二次突水后仍沿 Q2 原路线行进，六人的复演到达时刻为 $16.97$--$27.05\,\mathrm{min}$；
+重规划分别节省 $4.22,1.73,7.62,3.88,7.47,7.30\,\mathrm{min}$，相对节省 $10.22\%$--$29.17\%$。
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{mine1_q4_routes.png}\end{minipage}
+  \begin{minipage}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{mine2_q4_routes.png}\end{minipage}
+  \caption{问题四完整逃生路线及调整后出口选择}
+\end{figure}

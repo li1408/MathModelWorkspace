@@ -7,11 +7,11 @@ $miktex_bin =~ s!\\!/!g;
 
 if ($miktex_bin ne '') {
   $xelatex = qq{"$miktex_bin/xelatex.exe" -disable-installer -synctex=1 -interaction=nonstopmode -file-line-error %O %S};
-  $bibtex = qq{"$miktex_bin/bibtex.exe" %O %B};
+  $bibtex = qq{"$miktex_bin/bibtexu.exe" %O %B};
   $xdvipdfmx = qq{"$miktex_bin/xdvipdfmx.exe" -E -o %D %O %S};
 } else {
   $xelatex = 'xelatex -disable-installer -synctex=1 -interaction=nonstopmode -file-line-error %O %S';
-  $bibtex = 'bibtex %O %B';
+  $bibtex = 'bibtexu %O %B';
 }
 
 $ENV{'TEXINPUTS'} = '../styles;' . ($ENV{'TEXINPUTS'} || '');

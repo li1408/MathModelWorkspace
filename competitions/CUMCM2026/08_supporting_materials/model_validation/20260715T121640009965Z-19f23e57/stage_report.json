@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "run_id": "20260715T121640009965Z-19f23e57",
+  "profile": "audit",
+  "status": "completed",
+  "stages": [
+    {
+      "name": "alternatives",
+      "status": "completed",
+      "started_at": "2026-07-15T12:16:40.279Z",
+      "completed_at": "2026-07-15T12:19:02.425Z",
+      "outputs": [],
+      "issues": []
+    },
+    {
+      "name": "algorithm_preconditions",
+      "status": "completed",
+      "started_at": "2026-07-15T12:19:02.425Z",
+      "completed_at": "2026-07-15T12:21:55.382Z",
+      "outputs": [],
+      "issues": []
+    },
+    {
+      "name": "convergence",
+      "status": "completed",
+      "started_at": "2026-07-15T12:21:55.382Z",
+      "completed_at": "2026-07-15T12:24:03.994Z",
+      "outputs": [],
+      "issues": []
+    },
+    {
+      "name": "structural_sensitivity",
+      "status": "completed",
+      "started_at": "2026-07-15T12:24:03.994Z",
+      "completed_at": "2026-07-15T12:24:04.994Z",
+      "outputs": [],
+      "issues": []
+    },
+    {
+      "name": "comparison_audit",
+      "status": "completed",
+      "started_at": "2026-07-15T12:24:04.994Z",
+      "completed_at": "2026-07-15T12:24:05.279Z",
+      "outputs": [],
+      "issues": []
+    },
+    {
+      "name": "evidence_map",
+      "status": "completed",
+      "started_at": "2026-07-15T12:24:05.279Z",
+      "completed_at": "2026-07-15T12:24:05.859Z",
+      "outputs": [],
+      "issues": []
+    },
+    {
+      "name": "convergence",
+      "status": "completed",
+      "started_at": "2026-07-15T12:27:01.830Z",
+      "completed_at": "2026-07-15T12:28:52.237Z",
+      "outputs": [
+        "convergence/convergence_metrics.csv",
+        "convergence/convergence_report.json",
+        "convergence/mine1_scale_100.json",
+        "convergence/mine1_scale_200.json",
+        "convergence/mine1_scale_400.json",
+        "convergence/mine2_scale_100.json",
+        "convergence/mine2_scale_200.json",
+        "convergence/mine2_scale_400.json"
+      ],
+      "issues": [
+        {
+          "severity": "WARNING",
+          "rule": "convergence_threshold_exceeded",
+          "message": "A configured spatial-convergence threshold was not met.",
+          "path": "",
+          "details": {
+            "metric": "max_relative_error",
+            "value": 38.60390783226483
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "convergence_threshold_exceeded",
+          "message": "A configured spatial-convergence threshold was not met.",
+          "path": "",
+          "details": {
+            "metric": "rmse_min",
+            "value": 1271.521538905722
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "convergence_threshold_exceeded",
+          "message": "A configured spatial-convergence threshold was not met.",
+          "path": "",
+          "details": {
+            "metric": "max_relative_error",
+            "value": 0.06619846114167197
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "convergence_threshold_exceeded",
+          "message": "A configured spatial-convergence threshold was not met.",
+          "path": "",
+          "details": {
+            "metric": "rmse_min",
+            "value": 80.54962824848296
+          }
+        }
+      ]
+    },
+    {
+      "name": "figures",
+      "status": "completed",
+      "started_at": "2026-07-15T12:39:32.364Z",
+      "completed_at": "2026-07-15T12:39:44.839Z",
+      "outputs": [
+        "figures/.gitkeep",
+        "figures/figure_quality_report.json",
+        "figures/mine1_network.png",
+        "figures/mine1_q2_routes.png",
+        "figures/mine1_q4_routes.png",
+        "figures/mine1_water_arrival.png",
+        "figures/mine2_network.png",
+        "figures/mine2_q2_routes.png",
+        "figures/mine2_q4_routes.png",
+        "figures/mine2_water_arrival.png",
+        "figures/sensitivity_summary.png"
+      ],
+      "issues": [
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine1_network.png",
+          "details": {
+            "figure_id": "FIG-NET-01"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine1_q2_routes.png",
+          "details": {
+            "figure_id": "FIG-Q2-01"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine1_q4_routes.png",
+          "details": {
+            "figure_id": "FIG-Q4-01"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine1_water_arrival.png",
+          "details": {
+            "figure_id": "FIG-WATER-01"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine2_network.png",
+          "details": {
+            "figure_id": "FIG-NET-02"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine2_q2_routes.png",
+          "details": {
+            "figure_id": "FIG-Q2-02"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine2_q4_routes.png",
+          "details": {
+            "figure_id": "FIG-Q4-02"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/mine2_water_arrival.png",
+          "details": {
+            "figure_id": "FIG-WATER-02"
+          }
+        },
+        {
+          "severity": "WARNING",
+          "rule": "figure_human_review_missing",
+          "message": "A paper-referenced figure has not completed human review.",
+          "path": "06_paper_assets/figures/sensitivity_summary.png",
+          "details": {
+            "figure_id": "FIG-SENS-01"
+          }
+        }
+      ]
+    },
+    {
+      "name": "cold_reproduction",
+      "status": "completed",
+      "started_at": "2026-07-15T12:40:06.619Z",
+      "completed_at": "2026-07-15T12:40:08.478Z",
+      "outputs": [
+        "cold_reproduction/cold_reproduction_report.json",
+        "cold_reproduction/smoke_39f5cd9886_a/__pycache__/data_io.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_a/__pycache__/escape_routing.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_a/__pycache__/flow_strategies.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_a/__pycache__/graph_utils.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_a/__pycache__/water_flow.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_a/data_io.py",
+        "cold_reproduction/smoke_39f5cd9886_a/escape_routing.py",
+        "cold_reproduction/smoke_39f5cd9886_a/flow_strategies.py",
+        "cold_reproduction/smoke_39f5cd9886_a/graph_utils.py",
+        "cold_reproduction/smoke_39f5cd9886_a/result.json",
+        "cold_reproduction/smoke_39f5cd9886_a/smoke_runner.py",
+        "cold_reproduction/smoke_39f5cd9886_a/water_flow.py",
+        "cold_reproduction/smoke_39f5cd9886_b/__pycache__/data_io.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_b/__pycache__/escape_routing.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_b/__pycache__/flow_strategies.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_b/__pycache__/graph_utils.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_b/__pycache__/water_flow.cpython-310.pyc",
+        "cold_reproduction/smoke_39f5cd9886_b/data_io.py",
+        "cold_reproduction/smoke_39f5cd9886_b/escape_routing.py",
+        "cold_reproduction/smoke_39f5cd9886_b/flow_strategies.py",
+        "cold_reproduction/smoke_39f5cd9886_b/graph_utils.py",
+        "cold_reproduction/smoke_39f5cd9886_b/result.json",
+        "cold_reproduction/smoke_39f5cd9886_b/smoke_runner.py",
+        "cold_reproduction/smoke_39f5cd9886_b/water_flow.py"
+      ],
+      "issues": []
+    },
+    {
+      "name": "supporting_materials",
+      "status": "completed",
+      "started_at": "2026-07-15T13:02:17.228Z",
+      "completed_at": "2026-07-15T13:02:19.183Z",
+      "outputs": [],
+      "issues": []
+    }
+  ],
+  "completed_at": "2026-07-15T13:02:19.185Z"
+}

@@ -1,12 +1,32 @@
-﻿\section{模型检验}
+\section{模型检验}
 
-\subsection{一致性检验}
-\placeholder{说明模型输出是否满足约束、单位、边界条件和题目要求。}
+\subsection{结构与提交合同}
+自动校验检查 8 份结果工作簿的工作表名、表头、合并单元格、列宽、两位小数、正式巷道编号和起终点坐标；
+同时检查 Q4 从 $t=1$ 开始的完整前缀、路径时间单调性和出口可达性。全部 8 份工作簿和 12 条路线通过。
 
-\subsection{误差或稳定性检验}
-若存在真实观测值 $y_i$ 与预测值 $\hat{y}_i$，可使用
-\begin{equation}
-  \mathrm{RMSE}
-  = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}.
-\end{equation}
-\placeholder{只有在真实数据和代码输出存在时，才能填写误差指标。}
+\subsection{守恒律与反例回归}
+本题没有独立观测真值，因此采用守恒律、手算小图和单调性进行验证，结果见表\ref{tab:validation}。
+
+\begin{table}[H]
+\centering
+\caption{模型不变量与反例回归验证}
+\label{tab:validation}
+\begin{tabular}{p{0.27\textwidth}p{0.53\textwidth}c}
+\toprule
+检验 & 预期与结果 & 状态\\
+\midrule
+对称菱形汇流 & 两支路各 $15$，汇流后恢复 $30\,\mathrm{m^3/min}$ & 通过\\
+延迟同向水源 & 已湿节点新增水源后，下游流量升至 $60\,\mathrm{m^3/min}$ & 通过\\
+相反端点水源 & 100 m 巷道双端供水的手算充满时刻为 21 min & 通过\\
+虚拟拆边聚合 & 100 m 巷道在 10 m 处拆分，整巷充满时刻为 40 min & 通过\\
+途中来水 & 1200 m 巷道第 1 min 来水，分段通行时间为 17 min & 通过\\
+局部分段水向 & 中点水源两侧分别判为相反的顺水方向 & 通过\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+全规模计算中，矿井 1 的 Q1/Q3 质量守恒绝对误差分别为
+$7.92\times10^{-9}$、$1.30\times10^{-6}\,\mathrm{m^3}$，矿井 2 分别为
+$8.73\times10^{-11}$、$1.16\times10^{-10}\,\mathrm{m^3}$；最大相对误差为
+$1.76\times10^{-11}$。Q3 对所有 Q1 已到达端点和已充满巷道均未出现反常延后。
+此外，23 项自动测试全部通过，覆盖投影吸附、质量守恒、相向水源、途中状态切换、Q4 连续复演和 Excel 合同。
