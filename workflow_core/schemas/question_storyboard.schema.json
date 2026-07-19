@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/question_storyboard.schema.json",
+  "type": "object",
+  "required": ["schema_version", "questions", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["question_id", "decision_or_scientific_goal", "inputs", "required_outputs", "core_difficulty", "candidate_models", "selected_model", "selection_rationale", "key_assumptions", "algorithm_prerequisites", "solver_plan", "validation_plan", "expected_figures_tables", "claim_boundaries", "paper_outline", "reviewer", "status", "extensions"],
+        "properties": {
+          "question_id": {"type": "string", "minLength": 1},
+          "decision_or_scientific_goal": {"type": "string", "minLength": 1},
+          "inputs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+          "required_outputs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+          "core_difficulty": {"type": "string", "minLength": 1},
+          "candidate_models": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+          "selected_model": {"type": "string", "minLength": 1},
+          "selection_rationale": {"type": "string", "minLength": 1},
+          "key_assumptions": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "algorithm_prerequisites": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "solver_plan": {"type": "string", "minLength": 1},
+          "validation_plan": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["validation_id", "decision", "decision_rationale"],
+              "properties": {
+                "validation_id": {"type": "string", "minLength": 1},
+                "decision": {"enum": ["selected", "not_applicable"]},
+                "decision_rationale": {"type": "string", "minLength": 1}
+              },
+              "additionalProperties": false
+            }
+          },
+          "expected_figures_tables": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "claim_boundaries": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "paper_outline": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "reviewer": {"type": ["string", "null"]},
+          "status": {"enum": ["draft", "reviewed"]},
+          "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

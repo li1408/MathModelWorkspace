@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/data_catalog.schema.json",
+  "type": "object",
+  "required": ["schema_version", "assets", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["asset_id", "logical_uri", "format", "logical_type", "source", "read_only", "sha256", "size_bytes", "sensitivity", "detected_schema", "confirmed_type"],
+        "properties": {
+          "asset_id": {"type": "string"},
+          "logical_uri": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/logicalUri"},
+          "format": {"type": "string"},
+          "logical_type": {"enum": ["tabular", "time_series", "network", "spatial", "labels", "document", "template"]},
+          "source": {"type": "string"},
+          "read_only": {"const": true},
+          "sha256": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/sha256"},
+          "size_bytes": {"type": ["integer", "null"], "minimum": 0},
+          "sensitivity": {"enum": ["public", "competition_private", "personal", "unknown"]},
+          "detected_schema": {"type": ["object", "null"]},
+          "confirmed_type": {"type": ["string", "null"]},
+          "reproduction_relative_path": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/relativePath"},
+          "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

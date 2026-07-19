@@ -1,0 +1,24 @@
+schema_version: 1
+default_level: A2
+question_overrides: {}
+model_overrides: {}
+risk_summary:
+  - 四项高风险规则或算法前提需要结构化处理。
+  - 替代模型比较前必须审计对象集合、单位、时间窗口和可配对性。
+  - 正式结论必须来自冻结的 analysis run。
+deadline_at: null
+submission_buffer: null
+selected_experiments:
+  - baseline_invariants
+  - algorithm_precondition_validation
+  - parameter_sensitivity
+  - structural_flow_rule_comparison
+  - spatial_convergence
+  - matched_set_comparison_audit
+escalation_rules:
+  - 高风险假设为 unreviewed 或 unresolved 时不得进入 final。
+  - 替代模型改变主要出口或可达性时提升审计深度并缩小结论边界。
+  - 基本不变量失败时停止后续模型比较。
+approved_at: null
+approval_ref: null
+extensions: {}

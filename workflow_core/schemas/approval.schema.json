@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/approval.schema.json",
+  "type": "object",
+  "required": ["schema_version", "gate_id", "decision", "actor_type", "human_id", "reviewer_role", "reviewed_artifacts", "artifact_hashes", "timestamp", "notes"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "gate_id": {"pattern": "^H[1-8]$"},
+    "decision": {"enum": ["approved", "rejected", "changes_requested"]},
+    "actor_type": {"const": "human"},
+    "human_id": {"enum": ["M1", "M2", "M3"]},
+    "reviewer_role": {"enum": ["general", "model_numeric_reviewer", "paper_compliance_reviewer"]},
+    "reviewed_artifacts": {"type": "array", "items": {"type": "string"}},
+    "artifact_hashes": {"type": "object", "additionalProperties": {"pattern": "^[a-fA-F0-9]{64}$"}},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "notes": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

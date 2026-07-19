@@ -1,0 +1,22 @@
+schema_version: 1
+fields:
+  - {name: figure_id, type: string, required: true, unique: true}
+  - {name: file_path, type: string, required: true}
+  - {name: title, type: string, required: true}
+  - {name: purpose, type: string, required: true}
+  - {name: source_data, type: string, required: false}
+  - {name: claim_ids, type: string, required: false}
+  - {name: source_run_id, type: string, required: true}
+  - {name: source_artifact_ids, type: string, required: false}
+  - {name: source_file_hashes, type: string, required: false}
+  - {name: x_label, type: string, required: false}
+  - {name: y_label, type: string, required: false}
+  - {name: unit, type: string, required: false}
+  - {name: scale, type: string, required: false}
+  - {name: resolution, type: string, required: true}
+  - {name: dpi, type: number, required: false}
+  - {name: paper_width, type: string, required: true}
+  - {name: comparison_group, type: string, required: false}
+  - {name: shared_scale_group, type: string, required: false}
+  - {name: reviewer, type: string, required: false}
+  - {name: status, type: string, required: true, enum: [draft, reviewed, rejected]}

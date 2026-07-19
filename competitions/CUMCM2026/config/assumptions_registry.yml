@@ -1,0 +1,95 @@
+schema_version: 1
+assumptions:
+  - assumption_id: ASM-BRANCH-EQUAL-FLOW
+    name: 分叉处平均分流
+    category: given_condition
+    description: 按题面规则在可传播分支之间平均分配流量。
+    source_ref: PROBLEM-DOCUMENT:题目水流传播规则
+    rationale: 该规则直接来自练习题面，必须与作者提出的机制假设区分。
+    risk_level: high
+    decision_impact: 会影响到达时刻、充满时刻和后续逃生路线。
+    affected_questions: [Q1, Q2, Q3, Q4]
+    affected_models: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-STRUCTURAL-FLOW-RULE]
+    validation_methods: [替代分流规则结构敏感性比较]
+    alternative_models: [slope_weighted, capacity_weighted]
+    fallback_action: 若主要决策发生变化，则缩小结论范围并在论文中明确题面规则依赖。
+    paper_section: 模型假设与水流传播模型
+    status: unreviewed
+    owner: M1
+    reviewer: null
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+    evidence_ids: []
+    literature_refs: []
+  - assumption_id: ASM-DOWNHILL-DIRECTION
+    name: 非水平巷道只允许由高端向低端传播
+    category: given_condition
+    description: 按题面传播规则确定非水平巷道的水流方向。
+    source_ref: PROBLEM-DOCUMENT:题目水流传播规则
+    rationale: 该条件来自题面，但其简化程度会影响可达范围。
+    risk_level: high
+    decision_impact: 会改变水流覆盖集合和路线可行性。
+    affected_questions: [Q1, Q2, Q3, Q4]
+    affected_models: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-STRUCTURAL-DIRECTION]
+    validation_methods: [方向规则结构敏感性比较]
+    alternative_models: [bidirectional_head_based]
+    fallback_action: 若替代方向规则改变主要结论，则仅报告题面机制下的条件性结论。
+    paper_section: 模型假设与巷道定向
+    status: unreviewed
+    owner: M1
+    reviewer: null
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+    evidence_ids: []
+    literature_refs: []
+  - assumption_id: ASM-HORIZONTAL-NOMINAL-POTENTIAL
+    name: 水平巷道按名义势定向
+    category: algorithmic_assumption
+    description: 对几何高度相同的巷道使用可复现的名义势规则确定传播方向。
+    source_ref: 04_code/graph_utils.py:legacy implementation
+    rationale: 需要确定性处理水平边，但该处理不是题面直接给出的物理定律。
+    risk_level: high
+    decision_impact: 可能改变水平连通区域的传播顺序和覆盖集合。
+    affected_questions: [Q1, Q2, Q3, Q4]
+    affected_models: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-STRUCTURAL-DIRECTION]
+    validation_methods: [水平边定向替代规则比较]
+    alternative_models: [horizontal_bidirectional, horizontal_undirected_event]
+    fallback_action: 若结论不稳健，则将水平边处理列为模型限制并避免无条件结论。
+    paper_section: 算法实现与模型限制
+    status: unreviewed
+    owner: M1
+    reviewer: null
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+    evidence_ids: []
+    literature_refs: []
+  - assumption_id: ASM-ROUTING-PRECONDITION
+    name: 时间依赖路线算法前提成立
+    category: algorithmic_assumption
+    description: 现有时间依赖最短路算法要求边到达函数满足其适用前提。
+    source_ref: 04_code/escape_routing.py:legacy algorithm
+    rationale: 若前提不满足，普通时间依赖 Dijkstra 的正式路线可能无效。
+    risk_level: high
+    decision_impact: 直接影响 Q2 和 Q4 路线最优性与可行性。
+    affected_questions: [Q2, Q4]
+    affected_models: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-ALGORITHM-PRECONDITION]
+    validation_methods: [事件边界前后数值采样与自适应加密]
+    alternative_models: [non_fifo_label_correcting]
+    fallback_action: 检测到违反时改用已验证的非 FIFO 后备算法；后备算法不可用则阻断正式路线。
+    paper_section: 逃生路线算法与适用性
+    status: unreviewed
+    owner: M1
+    reviewer: null
+    reviewed_by: null
+    reviewed_at: null
+    resolution_note: null
+    evidence_ids: []
+    literature_refs: []
+extensions: {}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/validation_plan.schema.json",
+  "type": "object",
+  "required": ["schema_version", "validations", "approval_ref", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "validations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["validation_id", "model_ids", "assumption_ids", "categories", "decision", "decision_rationale", "method", "trigger_reason", "metrics", "acceptance_criteria", "sample_design", "cost_class", "dependencies", "runner_id", "artifacts", "status", "reviewer"],
+        "properties": {
+          "validation_id": {"type": "string"},
+          "model_ids": {"type": "array", "items": {"type": "string"}},
+          "assumption_ids": {"type": "array", "items": {"type": "string"}},
+          "categories": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"pattern": "^[a-z][a-z0-9_]*$"}},
+          "decision": {"enum": ["selected", "not_applicable"]},
+          "decision_rationale": {"type": "string", "minLength": 1},
+          "method": {"type": "string"},
+          "trigger_reason": {"type": "string"},
+          "metrics": {"type": "array", "items": {"type": "string"}},
+          "acceptance_criteria": {"type": "object"},
+          "sample_design": {"type": "object"},
+          "cost_class": {"enum": ["low", "medium", "high", "unknown"]},
+          "dependencies": {"type": "array", "items": {"type": "string"}},
+          "runner_id": {"type": "string"},
+          "artifacts": {"type": "array", "items": {"type": "string"}},
+          "status": {"enum": ["draft", "approved", "completed", "failed", "not_applicable"]},
+          "reviewer": {"type": ["string", "null"]}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"decision": {"const": "not_applicable"}}},
+            "then": {"properties": {"reviewer": {"type": "string", "minLength": 1}}}
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "approval_ref": {"type": ["string", "null"]},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

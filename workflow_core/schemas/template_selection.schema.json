@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/template_selection.schema.json",
+  "type": "object",
+  "required": ["schema_version", "template_id", "template_asset_id", "template_logical_uri", "adapter_id", "status", "approval_ref", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "template_id": {"type": "string", "minLength": 1},
+    "template_asset_id": {"type": "string", "minLength": 1},
+    "template_logical_uri": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/logicalUri"},
+    "adapter_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["draft", "inspected", "previewed", "verified"]},
+    "approval_ref": {"type": ["string", "null"]},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

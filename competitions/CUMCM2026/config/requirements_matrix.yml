@@ -1,0 +1,47 @@
+schema_version: 1
+questions:
+  - question_id: Q1
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, PROBLEM-DOCUMENT]
+    outputs: [single_source_water_arrival_and_fill_times]
+    objective: 计算单突水点情景下水流在两座矿井巷道中的传播与充满时刻。
+    constraints: [follow_problem_statement_flow_rules, preserve_official_roadway_ids]
+    candidate_model_ids: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-MASS-CONSERVATION, VAL-OUTPUT-CONTRACT]
+    paper_section: 模型建立与问题一求解
+    result_artifacts: [result1-1.xlsx, result1-2.xlsx]
+    reviewer: null
+    status: draft
+  - question_id: Q2
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, Q1-WATER-STATE]
+    outputs: [single_source_escape_routes]
+    objective: 为各工人位置计算满足水深和速度约束的逃生路线。
+    constraints: [route_must_reach_an_exit, route_must_respect_dynamic_water_state]
+    candidate_model_ids: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-ROUTE-FEASIBILITY, VAL-ALGORITHM-PRECONDITION, VAL-OUTPUT-CONTRACT]
+    paper_section: 问题二逃生路线
+    result_artifacts: [result2-1.xlsx, result2-2.xlsx]
+    reviewer: null
+    status: draft
+  - question_id: Q3
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, PROBLEM-DOCUMENT]
+    outputs: [multi_source_water_arrival_and_fill_times]
+    objective: 计算第二突水点加入后的多源水流传播结果。
+    constraints: [preserve_source_start_times, preserve_official_roadway_ids]
+    candidate_model_ids: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-MASS-CONSERVATION, VAL-OUTPUT-CONTRACT]
+    paper_section: 问题三多源传播
+    result_artifacts: [result3-1.xlsx, result3-2.xlsx]
+    reviewer: null
+    status: draft
+  - question_id: Q4
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, Q3-WATER-STATE]
+    outputs: [replanned_escape_routes]
+    objective: 在第二突水点通知后重新规划各工人的逃生路线。
+    constraints: [route_must_reach_an_exit, replan_from_notification_state]
+    candidate_model_ids: [MINE-FLOOD-MAIN]
+    validation_ids: [VAL-ROUTE-FEASIBILITY, VAL-ALGORITHM-PRECONDITION, VAL-OUTPUT-CONTRACT]
+    paper_section: 问题四动态重规划
+    result_artifacts: [result4-1.xlsx, result4-2.xlsx]
+    reviewer: null
+    status: draft
+extensions: {}

@@ -561,6 +561,32 @@ def check_local_rules(
             )
 
 
+def check_official_rule_source(
+    rules: dict[str, Any],
+    allow_entries: list[dict[str, Any]],
+    issues: list[Issue],
+    mode: str,
+) -> None:
+    source = rules.get("official_rule_source", {})
+    confirmed = (
+        source.get("status") == "confirmed"
+        and bool(source.get("asset_id"))
+        and bool(re.fullmatch(r"[a-fA-F0-9]{64}", str(source.get("sha256", ""))))
+        and bool(source.get("retrieved_at"))
+    )
+    if confirmed:
+        return
+    add_issue(
+        issues,
+        allow_entries,
+        "ERROR" if mode == "final" else "WARNING",
+        "official_rules_pending",
+        "10_submission_check/submission_rules.yml",
+        "National rule parameters require a local official source snapshot, SHA256, and retrieval time.",
+        str(source.get("status", "missing")),
+    )
+
+
 def _add_gate_issues(
     gate_issues: Iterable[Any],
     allow_entries: list[dict[str, Any]],
@@ -733,6 +759,7 @@ def run_checks(
     scan_latex_log(root, rules, allow_entries, issues, mode)
     scan_generated_files(root, rules, allow_entries, issues)
     check_pdf_limits(root, rules, allow_entries, issues)
+    check_official_rule_source(rules, allow_entries, issues, mode)
     check_local_rules(rules, allow_entries, issues)
     check_model_trust(root, rules, allow_entries, issues, mode)
     if mode == "final":
@@ -744,12 +771,22 @@ def print_report(issues: list[Issue], mode: str) -> None:
     counts = {severity: 0 for severity in SEVERITIES}
     for issue in issues:
         counts[issue.severity] += 1
-    print(f"CUMCM2026 submission check mode={mode}")
-    print("NOTICE: Automated checks cannot replace manual compliance review by the team.")
-    print(f"Summary: ERROR={counts['ERROR']} WARNING={counts['WARNING']} INFO={counts['INFO']}")
+    console_print(f"CUMCM2026 submission check mode={mode}")
+    console_print("NOTICE: Automated checks cannot replace manual compliance review by the team.")
+    console_print(f"Summary: ERROR={counts['ERROR']} WARNING={counts['WARNING']} INFO={counts['INFO']}")
     for issue in issues:
         match = f" match={issue.match!r}" if issue.match else ""
-        print(f"[{issue.severity}] {issue.rule} {issue.path}: {issue.message}{match}")
+        console_print(f"[{issue.severity}] {issue.rule} {issue.path}: {issue.message}{match}")
+
+
+def console_text(value: str, encoding: str | None) -> str:
+    resolved = encoding or "utf-8"
+    return value.encode(resolved, errors="backslashreplace").decode(resolved)
+
+
+def console_print(value: str, *, stream: Any = None) -> None:
+    target = stream or sys.stdout
+    print(console_text(value, getattr(target, "encoding", None)), file=target)
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -781,10 +818,10 @@ def main(argv: list[str] | None = None) -> int:
         print_report(issues, args.mode)
         return 1 if any(issue.severity == "ERROR" for issue in issues) else 0
     except ConfigError as exc:
-        print(f"[CONFIG ERROR] {exc}", file=sys.stderr)
+        console_print(f"[CONFIG ERROR] {exc}", stream=sys.stderr)
         return 2
     except Exception as exc:  # noqa: BLE001
-        print(f"[SCRIPT ERROR] {type(exc).__name__}: {exc}", file=sys.stderr)
+        console_print(f"[SCRIPT ERROR] {type(exc).__name__}: {exc}", stream=sys.stderr)
         return 2
 
 

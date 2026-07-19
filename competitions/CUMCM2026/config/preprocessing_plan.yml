@@ -1,0 +1,21 @@
+schema_version: 1
+plans:
+  - plan_id: PREP-MINE-NETWORKS
+    input_asset_ids: [RAW-NETWORK-1, RAW-NETWORK-2]
+    operations:
+      - 只读解析工作簿及工作表结构
+      - 标准化端点、巷道、坐标和编号字段
+      - 校验巷道端点引用与网络连通性
+      - 生成可追溯的节点表、边表和数据画像
+    outputs:
+      - 03_processed_data/final/mine1_nodes.csv
+      - 03_processed_data/final/mine1_edges.csv
+      - 03_processed_data/final/mine2_nodes.csv
+      - 03_processed_data/final/mine2_edges.csv
+    field_changes:
+      - 仅标准化字段名和类型，不修改原始工作簿
+      - 派生巷道长度、坡度和连通关系并保留原编号
+    exception_policy: 发现缺失端点、非数值坐标或原始 hash 变化时停止正式执行。
+    runner_id: mine_flood_legacy_runner
+approval_ref: null
+extensions: {}

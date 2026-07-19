@@ -1,0 +1,16 @@
+schema_version: 1
+fields:
+  - {name: question_id, type: string, required: true, unique: true}
+  - {name: source_run_id, type: string, required: false}
+  - {name: model_id, type: string, required: false}
+  - {name: primary_metric, type: string, required: false}
+  - {name: value, type: string, required: false}
+  - {name: unit, type: string, required: false}
+  - {name: uncertainty_or_tolerance, type: string, required: false}
+  - {name: direct_evidence_id, type: string, required: false}
+  - {name: validation_evidence_ids, type: string, required: false}
+  - {name: decision_changed_under_alternatives, type: string, required: false, enum: ['true', 'false', unknown]}
+  - {name: conditions, type: string, required: false}
+  - {name: limitations, type: string, required: false}
+  - {name: reviewer, type: string, required: false}
+  - {name: status, type: string, required: true, enum: [draft, verified, rejected]}

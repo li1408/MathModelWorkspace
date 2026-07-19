@@ -1,0 +1,20 @@
+schema_version: 1
+plugin_id: spatial_numerical
+version: 0.1.0
+sdk_version: "0.1"
+status: experimental
+capabilities: [spatial_discretization, convergence_audit, geometry_mapping]
+problem_types: [spatial, numerical_approximation]
+prerequisites: [declared_units, deterministic_discretization, convergence_plan]
+resource_estimate: {cpu: resolution-dependent, memory: resolution-dependent, runtime_class: high}
+deterministic: true
+network_access: false
+matlab_requirements: {required: false, toolboxes: []}
+entrypoint: plugins.spatial_numerical.validator
+validation_templates: [grid_or_segment_convergence, mapping_integrity, runtime_scaling]
+validation_requirements:
+  - {category_id: mapping_integrity, criticality: hard, trigger_features: [], description: 检查离散对象与正式空间对象之间的映射完整性。}
+  - {category_id: deterministic_discretization, criticality: hard, trigger_features: [], description: 保证相同输入和配置产生确定性空间离散。}
+  - {category_id: spatial_convergence, criticality: human_reviewable, trigger_features: [], description: 使用多个尺度评估关键数值和主要决策的收敛性。}
+  - {category_id: runtime_cost, criticality: human_reviewable, trigger_features: [], description: 登记空间尺度变化对应的运行成本。}
+extension_schema: null

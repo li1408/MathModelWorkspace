@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/plugin_manifest.schema.json",
+  "type": "object",
+  "required": ["schema_version", "plugin_id", "version", "sdk_version", "status", "capabilities", "problem_types", "prerequisites", "resource_estimate", "deterministic", "network_access", "matlab_requirements", "entrypoint", "validation_templates", "validation_requirements", "extension_schema"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "plugin_id": {"pattern": "^[a-z][a-z0-9_]*$"},
+    "version": {"type": "string"},
+    "sdk_version": {"type": "string"},
+    "status": {"enum": ["planned", "experimental", "stable", "deprecated"]},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "problem_types": {"type": "array", "items": {"type": "string"}},
+    "prerequisites": {"type": "array", "items": {"type": "string"}},
+    "resource_estimate": {
+      "type": "object",
+      "required": ["cpu", "memory", "runtime_class"],
+      "properties": {
+        "cpu": {"type": "string"},
+        "memory": {"type": "string"},
+        "runtime_class": {"enum": ["low", "medium", "high", "unknown"]}
+      },
+      "additionalProperties": false
+    },
+    "deterministic": {"type": "boolean"},
+    "network_access": {"type": "boolean"},
+    "matlab_requirements": {
+      "type": "object",
+      "required": ["required", "toolboxes"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "toolboxes": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "entrypoint": {"type": ["string", "null"]},
+    "validation_templates": {"type": "array", "items": {"type": "string"}},
+    "validation_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["category_id", "criticality", "trigger_features", "description"],
+        "properties": {
+          "category_id": {"pattern": "^[a-z][a-z0-9_]*$"},
+          "criticality": {"enum": ["hard", "human_reviewable"]},
+          "trigger_features": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "description": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "extension_schema": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

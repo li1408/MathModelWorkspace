@@ -1,5 +1,11 @@
 rules_version: 2
-notice: "National rules listed under national_rules are treated as confirmed for the current workflow. School and regional additions remain under local_rules and must be filled manually when available."
+notice: "National rule values are retained as provisional check parameters. Until a local official source snapshot and SHA256 are registered, they remain pending confirmation."
+
+official_rule_source:
+  status: "pending_confirmation"
+  asset_id: null
+  sha256: null
+  retrieved_at: null
 
 national_rules:
   abstract_max_pages: 1
@@ -61,9 +67,11 @@ scan:
     - ".venv"
     - "venv"
     - ".local"
+    - "00_inbox"
     - "resources"
     - "07_paper/build"
     - "05_model_results/runs"
+    - "09_review_packages"
     - "10_submission_check/reports"
     - "10_submission_check/tests"
   latex_aux_extensions:

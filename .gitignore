@@ -36,3 +36,10 @@ Thumbs.db
 # Reference library is managed separately and can be large.
 resources/MathModelHub/*
 !resources/MathModelHub/.gitkeep
+
+# Imported source templates and machine-local asset maps
+paper_templates/imported/*/original/
+competitions/*/config/local/*.local.yml
+competitions/*/config/local/*.local.yaml
+competitions/*/09_review_packages/*
+!competitions/*/09_review_packages/README.md

@@ -1,0 +1,13 @@
+schema_version: 1
+plugins:
+  - {plugin_id: mechanism_physics, status: experimental, manifest: plugins/mechanism_physics/plugin.yml}
+  - {plugin_id: network_routing, status: experimental, manifest: plugins/network_routing/plugin.yml}
+  - {plugin_id: spatial_numerical, status: experimental, manifest: plugins/spatial_numerical/plugin.yml}
+  - {plugin_id: statistical_regression, status: planned, manifest: null}
+  - {plugin_id: classification, status: planned, manifest: null}
+  - {plugin_id: time_series, status: planned, manifest: null}
+  - {plugin_id: evaluation_ranking, status: planned, manifest: null}
+  - {plugin_id: optimization_exact, status: planned, manifest: null}
+  - {plugin_id: optimization_heuristic, status: planned, manifest: null}
+  - {plugin_id: stochastic_simulation, status: planned, manifest: null}
+  - {plugin_id: multi_model_integration, status: planned, manifest: null}

@@ -1,0 +1,9 @@
+schema_version: 1
+template_id: ctexart_generic
+document_class: ctexart
+compiler: xelatex
+bibliography: bibtex
+status: previewed
+original_path: paper_templates/builtin/ctexart_generic/original
+entry_file: main.tex
+original_sha256: b87c51a79a6322969c256f72e5b3aab0ee0a96e2bf2161497effac15ef5234b2

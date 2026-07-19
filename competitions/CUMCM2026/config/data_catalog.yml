@@ -1,0 +1,163 @@
+schema_version: 1
+assets:
+  - asset_id: TEMPLATE-CTEXART-GENERIC
+    logical_uri: asset://template/ctexart-generic
+    format: tex
+    logical_type: template
+    source: builtin_repository_template
+    read_only: true
+    sha256: b87c51a79a6322969c256f72e5b3aab0ee0a96e2bf2161497effac15ef5234b2
+    size_bytes: 780
+    sensitivity: public
+    detected_schema: null
+    confirmed_type: template
+    reproduction_relative_path: paper_templates/builtin/ctexart_generic/original/main.tex
+  - asset_id: PROBLEM-DOCUMENT
+    logical_uri: asset://reference/problem-d
+    format: pdf
+    logical_type: document
+    source: local_competition_package
+    read_only: true
+    sha256: 280d690a1f78f5ff0889760592bf30de903ac5144ed8491d59ae744e560c4aa8
+    size_bytes: 359362
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: document
+    reproduction_relative_path: 01_problem/problem_D.pdf
+  - asset_id: RAW-NETWORK-1
+    logical_uri: asset://raw/attachment-1
+    format: xlsx
+    logical_type: network
+    source: local_competition_package
+    read_only: true
+    sha256: 769b2cec2981ee655fa37ea13708442830bb42e19d74e7e40fa7809bbdc8b3eb
+    size_bytes: 56691
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: network
+    reproduction_relative_path: 02_raw_data/attachment_1.xlsx
+    extensions:
+      network_routing:
+        data_asset:
+          nodes_sheet: 端点
+          edges_sheet: 巷道
+          node_id_column: 端点编号
+          edge_start_column: 巷道端点1
+          edge_end_column: 巷道端点2
+  - asset_id: RAW-NETWORK-2
+    logical_uri: asset://raw/attachment-2
+    format: xlsx
+    logical_type: network
+    source: local_competition_package
+    read_only: true
+    sha256: 77ae841ebc62df2773de46a083b05aa95bc8111ca5c7fc62786c77a0501b068a
+    size_bytes: 57596
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: network
+    reproduction_relative_path: 02_raw_data/attachment_2.xlsx
+    extensions:
+      network_routing:
+        data_asset:
+          nodes_sheet: 端点
+          edges_sheet: 巷道
+          node_id_column: 端点编号
+          edge_start_column: 巷道端点1
+          edge_end_column: 巷道端点2
+  - asset_id: RESULT-TEMPLATE-1-1
+    logical_uri: asset://raw/result-template-1-1
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: cfa9bd89ca6c3c5976470a658af577e2c0ac0da98b488fb8e0fe2fae9f44d6bc
+    size_bytes: 35128
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result1-1.xlsx
+  - asset_id: RESULT-TEMPLATE-1-2
+    logical_uri: asset://raw/result-template-1-2
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: cfa9bd89ca6c3c5976470a658af577e2c0ac0da98b488fb8e0fe2fae9f44d6bc
+    size_bytes: 35128
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result1-2.xlsx
+  - asset_id: RESULT-TEMPLATE-2-1
+    logical_uri: asset://raw/result-template-2-1
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: ede188f310c06379cc4a325648265a7b20b83e6e00c1ac7c3cd9358deb90f97d
+    size_bytes: 12174
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result2-1.xlsx
+  - asset_id: RESULT-TEMPLATE-2-2
+    logical_uri: asset://raw/result-template-2-2
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: fe9bf025f32f14f1a50d547fac16480ac049dde84302105000d225bde21b3fc6
+    size_bytes: 12206
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result2-2.xlsx
+  - asset_id: RESULT-TEMPLATE-3-1
+    logical_uri: asset://raw/result-template-3-1
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: cfa9bd89ca6c3c5976470a658af577e2c0ac0da98b488fb8e0fe2fae9f44d6bc
+    size_bytes: 35128
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result3-1.xlsx
+  - asset_id: RESULT-TEMPLATE-3-2
+    logical_uri: asset://raw/result-template-3-2
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: cfa9bd89ca6c3c5976470a658af577e2c0ac0da98b488fb8e0fe2fae9f44d6bc
+    size_bytes: 35128
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result3-2.xlsx
+  - asset_id: RESULT-TEMPLATE-4-1
+    logical_uri: asset://raw/result-template-4-1
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: 0a7f570ce4ced26d0199406389fe47ac58a0bbf980775bae3d097c4f391eb166
+    size_bytes: 12172
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result4-1.xlsx
+  - asset_id: RESULT-TEMPLATE-4-2
+    logical_uri: asset://raw/result-template-4-2
+    format: xlsx
+    logical_type: tabular
+    source: local_competition_package
+    read_only: true
+    sha256: 144c0ceed4b93bce8efbbc05823204108cf07735b23c57445b5124c89c3fac1f
+    size_bytes: 12155
+    sensitivity: competition_private
+    detected_schema: null
+    confirmed_type: tabular
+    reproduction_relative_path: 02_raw_data/attachment_3/result4-2.xlsx
+extensions: {}

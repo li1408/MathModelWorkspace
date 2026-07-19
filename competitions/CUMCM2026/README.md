@@ -1,124 +1,124 @@
-# CUMCM2026 数学建模工作区
+# CUMCM2026 项目工作区 📊
+该目录保留已经跑通的矿井突水 Q1-Q4 练习流程，同时作为通用工作流第一轮回归案例。旧算法不迁入通用核心，也不因通用化而重写。
 
-本目录用于 2026 全国大学生数学建模竞赛的本地实战。核心链路为：MathModelHub 提供参考，VS Code 组织项目，MiKTeX/XeLaTeX 编译论文，LaTeX Workshop 预览与定位错误，Python/Jupyter 计算和绘图，Codex 辅助生成、修改、检查与修复，Git/GitHub 负责私有版本管理。
+## 两个入口
 
-## 目录说明
-
-| 目录 | 用途 |
-| --- | --- |
-| `00_inbox/` | 队友临时投递题目 PDF、附件文件夹和说明文件；由 Codex 再整理到正式目录 |
-| `00_official/` | 全国、赛区和学校正式通知与格式规则 |
-| `01_problem/` | 赛题原文、附件说明、问题拆解和选题记录 |
-| `02_raw_data/` | 只读原始数据、数据清单和校验值 |
-| `03_processed_data/` | 清洗数据和中间数据 |
-| `04_code/` | Python 数据处理、建模、验证、敏感性分析和导出代码 |
-| `05_model_results/` | 模型输出、指标、运行记录和实验结果 |
-| `06_paper_assets/` | 论文实际引用的图、表和 draw.io 源文件 |
-| `07_paper/` | `ctexart + XeLaTeX + BibTeX` 论文源码与 build 输出 |
-| `08_supporting_materials/` | 可复现说明、代码快照和支撑材料 |
-| `09_ai_logs/` | AI 实质性使用记录及提示词/回复原文 |
-| `10_submission_check/` | 自动提交检查、规则、敏感词和测试 |
-| `11_final_submission/` | 冻结后的最终提交文件及 SHA256 |
-
-## 首次使用
-
-在项目根目录运行：
-
-```powershell
-.\scripts\setup_local_paths.ps1
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\scripts\check_latex_env.ps1
-```
-
-当前项目使用：
-
-- MiKTeX：真实目录记录在 `.local/miktex-bin.path`
-- Perl：真实目录记录在 `.local/perl-bin.path`
-- Python 虚拟环境：项目根目录 `.venv/`
-- 临时文件和工具缓存：项目根目录 `.local/`
-
-项目包装器直接读取上述路径文件，论文和支撑材料中不写入机器绝对路径。
-
-## 论文编译
-
-正式默认编译：
-
-```powershell
-cd 07_paper
-..\.local\bin\latexmk.cmd -xelatex -outdir=build main.tex
-```
-
-LaTeX Workshop 默认使用同一配方，所有辅助文件进入 `07_paper/build/`。自动宏包安装已禁用，缺包会立即返回明确错误，避免 MiKTeX 图形界面无响应。
-
-当前没有真实参考文献时，`main.tex` 中 `\usereferencesfalse` 保持关闭。加入真实 BibTeX 条目并在正文使用 `\cite{}` 后，再改为 `\usereferencestrue`。
-
-## Python 与 Jupyter
-
-VS Code 默认解释器为 `.venv/Scripts/python.exe`。pip、Python 临时文件、matplotlib 和 Jupyter 缓存均通过 `.env.workspace` 与 VS Code 设置写入 `.local/`，不会把项目大包或缓存写入 C 盘。
-
-检查代码调度：
-
-```powershell
-.\.venv\Scripts\python.exe 04_code\run_all.py --dry-run
-```
-
-运行模型不变量与输出合同测试：
-
-```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s 04_code\tests -p 'test_*.py' -v
-```
-
-测试使用 Python 标准库 `unittest`，无需额外安装 `pytest`。完整实跑使用：
+### 兼容基线
 
 ```powershell
 .\.venv\Scripts\python.exe 04_code\run_all.py
 ```
 
-无参数命令保持原有 Q1--Q4 基线流程，不会自动运行耗时的替代模型、空间收敛或冷启动复现。需要检查模型可信度时使用：
+无参数行为保持不变：数据检查、清洗、Q1-Q4、验证、灵敏度、图表与导出。
+
+### 通用人工门禁
+
+在仓库根目录运行：
 
 ```powershell
-# 日常基线与论文输出
-.\.venv\Scripts\python.exe 04_code\run_all.py --profile practice
-
-# 替代模型、FIFO、收敛、比较审计和证据链
-.\.venv\Scripts\python.exe 04_code\run_all.py --profile audit
-
-# 增加冷启动、严格证据和提交门禁
-$env:CUMCM_INPUT_ROOT = (Resolve-Path 02_raw_data)
-.\.venv\Scripts\python.exe 04_code\run_all.py --profile final
+.\competitions\CUMCM2026\.venv\Scripts\python.exe -m workflow_core.cli.run_all `
+  --project competitions/CUMCM2026 --profile practice
 ```
 
-每次显式 profile 运行都会生成唯一 `run_id`，结果隔离到 `05_model_results/runs/<run_id>/`，并保存运行清单、配置快照、输入校验值、环境信息和阶段报告。该目录可能包含大文件，默认不进入 Git，并始终保存在本项目所在的 E 盘。
+通用流程不会直接导入 `04_code`，而是通过 `cases/registry.yml` 启动已登记案例 runner，并把输出复制到独立 run。
 
-阶段选择规则：`--stage <name>` 只运行一个阶段；`--from-stage <name>` 从指定阶段运行到 profile 末尾；`--stages a,b,c` 只运行显式列表。三者不能混用。可用 `--run-id <id>` 继续同一次隔离运行。
+每次等待人工门禁时，通用核心会自动生成 `09_review_packages/<run_id>/`。该机制属于通用工作流，后续新题目也使用相同的 01-H1 至 08-H8 顺序，不需要重新设计审核文件夹。
 
-论文重要结论登记在 `07_paper/evidence/claims.csv`，证据链接登记在 `evidence_links.csv`。图表技术信息和人工复核状态登记在 `06_paper_assets/figure_manifest.csv`。脚本只核对文件、指标和校验值，不能替代人工判断模型与图表是否真正支持结论。
+## 项目配置
 
-原始数据只放入 `02_raw_data/`，不得原地覆盖。大文件必须登记 `data_manifest.csv`、记录 SHA256，并至少保留一份本地或私有备份。
+| 文件 | 作用 |
+| --- | --- |
+| `config/problem_profile.yml` | Codex 生成的题目画像初稿，H1 前不可视为批准 |
+| `config/requirements_matrix.yml` | Q1-Q4 输入、输出、目标、验证和论文映射 |
+| `config/question_storyboard.yml` | 每个小问的目标、模型理由、求解路线、验证选择和结论边界 |
+| `config/data_catalog.yml` | 私有资产逻辑 URI、SHA256 与只读策略 |
+| `config/preprocessing_plan.yml` | H2 审批的预处理操作与输出 |
+| `config/assumptions_registry.yml` | 题面条件与作者假设分开登记 |
+| `config/model_cards/` | 模型角色、插件、前提、指标和失败模式 |
+| `config/validation_plan.yml` | 按风险选择的验证任务 |
+| `config/audit_plan.yml` | A0-A3 审计级别与升级条件 |
+| `config/supporting_materials_allowlist.yml` | 匿名支撑材料正向打包清单 |
+| `config/local/` | 本机资产和身份映射；Git 忽略 |
+| `09_review_packages/` | 自动生成的 AI+人工内部审核包；按 H1-H8 排序 |
 
-## 队友投递材料
-
-队友如果不清楚题目和附件应该放哪里，可以先全部放到：
+## Run 生命周期
 
 ```text
-00_inbox/
+created -> running -> waiting_approval/paused
+        -> completed -> frozen
+        -> failed/invalidated/tampered
 ```
 
-放好后告诉 Codex：
+每个 run 位于 `05_model_results/runs/<run_id>/`，包含配置与代码快照、输入 hash、环境、阶段报告、日志、输出和 artifact manifest。
+
+- `completed` 后输出不得新增、删除或覆盖。
+- 完整输出清单或 artifact hash 变化会把 run 标记为 `tampered`。
+- final 只能引用 `frozen` analysis run。
+- 配置变化必须创建新 run，并记录 `parent_run_id`。
+
+## 数据规则 🔒
+
+- 原始数据位于 `02_raw_data/`，只能读取。
+- 正式配置不保存个人绝对路径。
+- 本机路径只写入 `config/local/assets.local.yml`。
+- H2 未批准时不得生成正式处理后数据。
+- 冷启动正式输入只通过 `CUMCM_INPUT_ROOT` 提供。
+- 大文件、临时目录和复现副本必须保存在项目所在 E 盘。
+
+## 论文与证据
+
+- 结论登记：`07_paper/evidence/claims.csv`
+- 证据链接：`07_paper/evidence/evidence_links.csv`
+- 小问结果卡：`07_paper/evidence/question_result_cards.csv`
+- 摘要矩阵：`07_paper/evidence/abstract_matrix.csv`
+- 图表清单：`06_paper_assets/figure_manifest.csv`
+- 论文：`07_paper/main.tex`
+- 编译：`ctexart + XeLaTeX + BibTeX + gbt7714-numerical`
+
+major claim 必须有 direct evidence。稳定性、鲁棒性、准确性或最优性 major claim 还必须有 validation/robustness evidence，并写清条件和限制。
+
+填写顺序固定为：冻结 analysis run，登记 claims 和 evidence links，填写逐问结果卡，最后压缩成摘要矩阵。final evidence 阶段验证通过后，会把四张表复制到 submission run 并生成 `evidence_bundle.json`；H7/H8 审批绑定该 bundle 的 hash。
+
+初始结果卡和摘要矩阵只有表头，这是有意设计。不得为通过检查填入预测值、示例结果或虚构 reviewer。
+
+## 当前待人工处理
+
+- `00_official/` 没有全国规则原文快照，规则保持 `pending_confirmation`。
+- `problem_profile`、需求矩阵、假设、验证计划均为初稿，需要 H1-H4。
+- `claims.csv` 与 `evidence_links.csv` 当前不自动填入结论。
+- `question_result_cards.csv` 与 `abstract_matrix.csv` 当前保持空表，需在真实 analysis run 冻结后填写。
+- 图表清单中的旧图只迁移了结构，未登记冻结通用 run 的 artifact 与人工 reviewer。
+- final 提交前必须清除论文占位符并完成 H7/H8。
+
+## 审核包操作
+
+工作流暂停后，直接打开：
 
 ```text
-题目和附件已经放到 00_inbox，请整理到正式目录。
+09_review_packages/<run_id>/00_REVIEW_INDEX.csv
 ```
 
-Codex 会把官方规则、题目原文、原始数据和附件分别整理到 `00_official/`、`01_problem/`、`02_raw_data/`，并更新数据清单和 SHA256。`00_inbox/` 的真实文件默认不进入 Git。
+每个包包含一份冻结共享载荷、Google AI Studio 提示词和独立 Codex 审稿任务交接说明。队员不需要自己上传：在主 Codex 任务中说“开始审稿”，主 Codex 负责浏览器上传、保存 Gemini 回复、发送第二份审核任务并生成交叉核对。任一 AI 回复、合并结果或人工结论仍有 `PENDING` 标记时，批准命令都会被拒绝。
 
-## 提交检查
+当前没有创建本题的独立 Codex 审稿任务。以后创建后，只把任务 ID 写入 Git 忽略的 `config/local/review_tasks.local.yml`，不得写入正式配置或匿名提交包。
+
+默认不复制题目原始 PDF、原始附件、优秀论文、AI 历史日志或本机配置。如果比赛规则不允许向外部 AI 提供材料，应停止 AI 审核，只进行人工复核并按届时规则调整工作流。
+
+## 常用验证
 
 ```powershell
+# 项目测试
+.\.venv\Scripts\python.exe -m unittest discover -s 04_code\tests -p "test_*.py"
+.\.venv\Scripts\python.exe -m unittest discover -s 10_submission_check\tests -p "test_*.py"
+
+# LaTeX
+.\scripts\check_latex_env.ps1
+cd 07_paper
+..\.local\bin\latexmk.cmd -xelatex -outdir=build main.tex
+
+# 提交检查
+cd ..
 .\.venv\Scripts\python.exe 10_submission_check\check_submission.py --root . --mode draft
-.\.venv\Scripts\python.exe 10_submission_check\check_submission.py --root . --mode final
 ```
 
-draft 允许占位符并报告 WARNING；final 中任何占位符、本地敏感词配置缺失、最终文件缺失或 SHA256 不一致都会报告 ERROR 并返回退出码 1。
-
-实际身份敏感词必须从 `sensitive_terms.example.yml` 复制到 `sensitive_terms.local.yml` 后填写；local 文件已被 Git 忽略。自动检查不能替代最终双人交叉合规复核。
+自动检查不能替代人工合规复核，H8 必须由两个不同队员完成。

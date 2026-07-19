@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/problem_profile.schema.json",
+  "type": "object",
+  "required": ["schema_version", "problem_id", "question_ids", "problem_types", "data_types", "output_types", "model_features", "candidate_plugins", "validation_needs", "major_risks", "status", "generated_by", "approval_ref", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "problem_id": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/identifier"},
+    "question_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "problem_types": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "data_types": {"type": "array", "items": {"enum": ["tabular", "time_series", "network", "spatial", "labels", "document", "none"]}},
+    "output_types": {"type": "array", "items": {"type": "string"}},
+    "model_features": {"type": "array", "items": {"type": "string"}},
+    "candidate_plugins": {"type": "array", "items": {"type": "string"}},
+    "validation_needs": {"type": "array", "items": {"type": "string"}},
+    "major_risks": {"type": "array", "items": {"type": "string"}},
+    "status": {"enum": ["draft", "approved", "rejected"]},
+    "generated_by": {"enum": ["human", "codex", "import"]},
+    "approval_ref": {"type": ["string", "null"]},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

@@ -77,6 +77,13 @@ output/test_tmp/
 10_submission_check/sensitive_terms.local.yml
 10_submission_check/sensitive_terms.local.yaml
 
+# Machine-local asset and identity mappings
+config/local/assets.local.yml
+config/local/assets.local.yaml
+config/local/human_identities.local.yml
+config/local/human_identities.local.yaml
+config/migration_backups/
+
 # Raw data policy
 # Large raw data should stay out of Git and be registered in data_manifest.csv.
 02_raw_data/large/
@@ -88,6 +95,8 @@ output/test_tmp/
 
 # Local review packages and intermediate PDFs
 outputs/
+09_review_packages/*
+!09_review_packages/README.md
 
 # OS/editor noise
 .DS_Store

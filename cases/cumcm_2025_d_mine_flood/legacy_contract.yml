@@ -1,0 +1,11 @@
+schema_version: 1
+legacy_entrypoint: 04_code/run_all.py
+required_result_files:
+  - 05_model_results/tables/result1-1.xlsx
+  - 05_model_results/tables/result1-2.xlsx
+  - 05_model_results/tables/result2-1.xlsx
+  - 05_model_results/tables/result2-2.xlsx
+  - 05_model_results/tables/result3-1.xlsx
+  - 05_model_results/tables/result3-2.xlsx
+  - 05_model_results/tables/result4-1.xlsx
+  - 05_model_results/tables/result4-2.xlsx

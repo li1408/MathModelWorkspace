@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/rules.schema.json",
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "required": ["rule_id", "description", "constraint_operator", "value", "hard_rule", "submission_critical", "source_asset_id", "source_hash", "retrieved_at", "effective_from", "valid_until", "enforcement"],
+      "properties": {
+        "rule_id": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/identifier"},
+        "description": {"type": "string", "minLength": 1},
+        "constraint_operator": {"enum": ["max", "min", "required", "forbidden", "enum_subset"]},
+        "value": {},
+        "unit": {"type": ["string", "null"]},
+        "hard_rule": {"type": "boolean"},
+        "submission_critical": {"type": "boolean"},
+        "source_asset_id": {"type": ["string", "null"]},
+        "source_hash": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/sha256"},
+        "retrieved_at": {"type": ["string", "null"], "format": "date-time"},
+        "effective_from": {"type": ["string", "null"], "format": "date"},
+        "valid_until": {"type": ["string", "null"], "format": "date"},
+        "enforcement": {"enum": ["automatic", "manual", "mixed"]},
+        "notes": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["schema_version", "profile_id", "confirmed_official", "confirmed_local", "pending_confirmation", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "profile_id": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/identifier"},
+    "confirmed_official": {"type": "array", "items": {"$ref": "#/$defs/rule"}},
+    "confirmed_local": {"type": "array", "items": {"$ref": "#/$defs/rule"}},
+    "pending_confirmation": {"type": "array", "items": {"$ref": "#/$defs/rule"}},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

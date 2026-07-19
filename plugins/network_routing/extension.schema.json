@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/plugins/network_routing/extension.schema.json",
+  "type": "object",
+  "properties": {
+    "data_asset": {
+      "type": "object",
+      "required": ["nodes_sheet", "edges_sheet", "node_id_column", "edge_start_column", "edge_end_column"],
+      "properties": {
+        "nodes_sheet": {"type": "string", "minLength": 1},
+        "edges_sheet": {"type": "string", "minLength": 1},
+        "node_id_column": {"type": "string", "minLength": 1},
+        "edge_start_column": {"type": "string", "minLength": 1},
+        "edge_end_column": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "model_card": {"type": "object"}
+  },
+  "additionalProperties": false
+}

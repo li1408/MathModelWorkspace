@@ -1,0 +1,18 @@
+schema_version: 1
+fields:
+  - {name: evidence_id, type: string, required: true, unique: true}
+  - {name: claim_id, type: string, required: true}
+  - {name: evidence_type, type: string, required: true, enum: [direct, validation, robustness]}
+  - {name: source_run_id, type: string, required: true}
+  - {name: artifact_id, type: string, required: true}
+  - {name: source_file, type: string, required: true}
+  - {name: source_result, type: string, required: false}
+  - {name: metric, type: string, required: true}
+  - {name: value, type: string, required: true}
+  - {name: unit, type: string, required: false}
+  - {name: figure_or_table, type: string, required: false}
+  - {name: validation_method, type: string, required: true}
+  - {name: validation_status, type: string, required: false, enum: [draft, verified, rejected]}
+  - {name: file_hash, type: string, required: true}
+  - {name: reviewer, type: string, required: false}
+  - {name: status, type: string, required: true, enum: [draft, verified, rejected]}

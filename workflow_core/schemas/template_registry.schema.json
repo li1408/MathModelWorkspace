@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/template_registry.schema.json",
+  "type": "object",
+  "required": ["schema_version", "templates"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["template_id", "format", "status", "source_type", "original_path", "adapter_path", "compiler_or_renderer", "source_hash", "verified_by"],
+        "properties": {
+          "template_id": {"type": "string"},
+          "format": {"enum": ["latex", "word"]},
+          "status": {"enum": ["planned", "imported", "inspected", "previewed", "verified", "deprecated"]},
+          "source_type": {"enum": ["builtin", "official", "school", "user", "imported"]},
+          "original_path": {"anyOf": [{"type": "null"}, {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/relativePath"}]},
+          "adapter_path": {"anyOf": [{"type": "null"}, {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/relativePath"}]},
+          "compiler_or_renderer": {"type": "string"}
+          ,"source_hash": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/sha256"}
+          ,"verified_by": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

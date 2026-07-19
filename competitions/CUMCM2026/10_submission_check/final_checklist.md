@@ -35,6 +35,9 @@
 ## AI 使用
 
 - [ ] 每次实质性 AI 使用均记录到 `09_ai_logs/ai_usage_log.csv`。
+- [ ] H1-H8 已按实际阶段生成 `09_review_packages/<run_id>/` 审核包。
+- [ ] 每个已执行门禁的 `03_AI_REVIEW.md` 和 `05_HUMAN_DECISION.md` 已完成且 hash 已进入审批记录。
+- [ ] `09_review_packages/` 仅作内部审核，未进入匿名支撑材料或最终提交包。
 - [ ] 完整提示词已保存。
 - [ ] 完整回复已保存。
 - [ ] AI 输出已人工验证。

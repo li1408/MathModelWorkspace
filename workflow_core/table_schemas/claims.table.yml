@@ -1,0 +1,17 @@
+schema_version: 1
+fields:
+  - {name: claim_id, type: string, required: true, unique: true}
+  - {name: question_id, type: string, required: true}
+  - {name: paper_section, type: string, required: true}
+  - {name: claim_text, type: string, required: true}
+  - name: claim_kind
+    type: string
+    required: true
+    enum: [descriptive, comparative, stability, robustness, accuracy, optimality, causal, decision]
+  - {name: importance, type: string, required: true, enum: [minor, major]}
+  - {name: conditions, type: string, required: false}
+  - {name: limitations, type: string, required: false}
+  - {name: status, type: string, required: true, enum: [draft, verified, rejected]}
+  - {name: owner, type: string, required: true}
+  - {name: reviewer, type: string, required: false}
+  - {name: reviewed_at, type: string, required: false}

@@ -1,0 +1,20 @@
+schema_version: 1
+templates:
+  - template_id: ctexart_generic
+    format: latex
+    status: previewed
+    source_type: builtin
+    original_path: paper_templates/builtin/ctexart_generic
+    adapter_path: paper_templates/adapters/ctexart_generic.yml
+    compiler_or_renderer: xelatex
+    source_hash: b87c51a79a6322969c256f72e5b3aab0ee0a96e2bf2161497effac15ef5234b2
+    verified_by: null
+  - template_id: word_imported
+    format: word
+    status: planned
+    source_type: imported
+    original_path: null
+    adapter_path: null
+    compiler_or_renderer: microsoft_word
+    source_hash: null
+    verified_by: null

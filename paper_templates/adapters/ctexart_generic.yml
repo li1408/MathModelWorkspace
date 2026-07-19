@@ -1,0 +1,7 @@
+schema_version: 1
+adapter_id: ctexart_generic
+template_id: ctexart_generic
+strategy: external_style_overlay
+working_paper_root: 07_paper
+build_directory: 07_paper/build
+original_is_immutable: true

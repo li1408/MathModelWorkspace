@@ -1,0 +1,13 @@
+schema_version: 1
+fields:
+  - {name: question_id, type: string, required: true, unique: true}
+  - {name: objective_sentence, type: string, required: false}
+  - {name: method_sentence, type: string, required: false}
+  - {name: result_sentence, type: string, required: false}
+  - {name: validation_sentence, type: string, required: false}
+  - {name: limitations_sentence, type: string, required: false}
+  - {name: claim_ids, type: string, required: false}
+  - {name: evidence_ids, type: string, required: false}
+  - {name: source_run_id, type: string, required: false}
+  - {name: reviewer, type: string, required: false}
+  - {name: status, type: string, required: true, enum: [draft, verified, rejected]}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/preprocessing_plan.schema.json",
+  "type": "object",
+  "required": ["schema_version", "plans", "approval_ref", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "plans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["plan_id", "input_asset_ids", "operations", "outputs", "field_changes", "exception_policy", "runner_id"],
+        "properties": {
+          "plan_id": {"type": "string"},
+          "input_asset_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "operations": {"type": "array", "items": {"type": "string"}},
+          "outputs": {"type": "array", "items": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/relativePath"}},
+          "field_changes": {"type": "array", "items": {"type": "string"}},
+          "exception_policy": {"type": "string"},
+          "runner_id": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "approval_ref": {"type": ["string", "null"]},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

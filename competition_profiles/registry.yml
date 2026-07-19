@@ -1,0 +1,6 @@
+schema_version: 1
+profiles:
+  - profile_id: cumcm
+    profile_path: competition_profiles/cumcm/profile.yml
+    rules_path: competition_profiles/cumcm/rules.yml
+    status: active

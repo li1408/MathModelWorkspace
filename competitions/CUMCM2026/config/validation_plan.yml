@@ -1,0 +1,208 @@
+schema_version: 1
+validations:
+  - validation_id: VAL-UNITS-DIMENSIONS
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [units_dimensions]
+    decision: selected
+    decision_rationale: 机制模型中的长度、面积、流量、速度和时间必须保持量纲及换算一致。
+    method: 核对输入字段、模型参数、公式和输出指标的单位及量纲关系。
+    trigger_reason: 量纲错误会系统性污染传播时刻和路线速度计算。
+    metrics: [unit_contract_failure_count]
+    acceptance_criteria: {unit_contract_failure_count_max: 0}
+    sample_design: {scope: all_physical_variables_and_exported_metrics}
+    cost_class: low
+    dependencies: [preprocessing_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [unit_dimension_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-MASS-CONSERVATION
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [basic_invariants]
+    decision: selected
+    decision_rationale: 质量守恒是水流机制模型不可省略的基本不变量检查。
+    method: 对每次水流仿真核对累计输入、系统存量和输出残差。
+    trigger_reason: 机制模型的基本不变量。
+    metrics: [mass_balance_residual]
+    acceptance_criteria: {absolute_residual_max: 1.0e-6}
+    sample_design: {scope: all_baseline_scenarios}
+    cost_class: low
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [mass_balance_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-BOUNDARY-LIMITS
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [boundary_limit_cases]
+    decision: selected
+    decision_rationale: 需要检查零传播距离、无可传播分支和边界节点等机制极限情形。
+    method: 对预先登记的边界与极限 fixture 检查时间、流量和状态转移是否符合模型定义。
+    trigger_reason: 正常样本通过不能覆盖机制模型在边界状态下的行为。
+    metrics: [boundary_case_pass_count, boundary_case_failure_count]
+    acceptance_criteria: {boundary_case_failure_count_max: 0}
+    sample_design: {fixtures_require_H4_approval: true}
+    cost_class: low
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [boundary_limit_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-ROUTE-FEASIBILITY
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [path_feasibility]
+    decision: selected
+    decision_rationale: 每条正式逃生路线都必须满足连续性、动态约束和出口可达性。
+    method: 检查路径起点、终点、连续性、时间单调性和动态水深约束。
+    trigger_reason: 路线必须真实可走并到达出口。
+    metrics: [valid_route_count, invalid_route_count]
+    acceptance_criteria: {invalid_route_count_max: 0}
+    sample_design: {scope: all_workers_and_scenarios}
+    cost_class: low
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [route_validation_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-ALGORITHM-PRECONDITION
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: [ASM-ROUTING-PRECONDITION]
+    categories: [algorithm_preconditions]
+    decision: selected
+    decision_rationale: 时间依赖路线算法只有通过适用前提检查后才能生成正式路线。
+    method: 在全部状态事件边界前后采样并按需自适应加密，进行算法前提的数值检验。
+    trigger_reason: 时间依赖路线算法需要先验证适用前提。
+    metrics: [checked_edges, sample_count, violation_count, maximum_violation]
+    acceptance_criteria: {violation_count_max: 0, fallback_required_on_violation: true}
+    sample_design: {event_boundary_offsets: [before, at, after], adaptive_refinement: true}
+    cost_class: medium
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [algorithm_precondition_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-OUTPUT-CONTRACT
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [graph_contract]
+    decision: selected
+    decision_rationale: 官方结果合同同时核对正式巷道编号集合和输出结构。
+    method: 核对 8 个官方结果工作簿的文件名、工作表、行列和编号集合。
+    trigger_reason: 保证提交文件满足题目附件合同。
+    metrics: [contract_pass_count, contract_failure_count]
+    acceptance_criteria: {contract_failure_count_max: 0}
+    sample_design: {scope: all_result_workbooks}
+    cost_class: low
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [official_excel_contract_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-MAPPING-INTEGRITY
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [mapping_integrity]
+    decision: selected
+    decision_rationale: 虚拟节点和离散段的结果必须能无歧义聚合回正式巷道编号。
+    method: 检查每个内部节点和离散段到正式巷道的映射完整性、唯一性和导出覆盖。
+    trigger_reason: 空间离散不能改变官方结果对象集合。
+    metrics: [unmapped_object_count, duplicate_mapping_count]
+    acceptance_criteria: {unmapped_object_count_max: 0, duplicate_mapping_count_max: 0}
+    sample_design: {scope: all_internal_spatial_objects}
+    cost_class: low
+    dependencies: [preprocessing_execution, model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [mapping_integrity_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-DETERMINISTIC-DISCRETIZATION
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [deterministic_discretization]
+    decision: selected
+    decision_rationale: 相同输入和配置必须产生相同的空间拆分与正式巷道映射。
+    method: 在清洁运行目录重复构建空间离散并比较结构化映射内容。
+    trigger_reason: 非确定性离散会破坏复现和结果比较。
+    metrics: [mapping_difference_count]
+    acceptance_criteria: {mapping_difference_count_max: 0}
+    sample_design: {repeat_count: 2}
+    cost_class: low
+    dependencies: [preprocessing_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [deterministic_discretization_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-SPATIAL-CONVERGENCE
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [spatial_convergence]
+    decision: selected
+    decision_rationale: 关键时间、覆盖集合和路线决策需要在多个确定性尺度上比较。
+    method: 使用 H4 批准的多个最大分段长度，以最细完成尺度为参考计算误差和决策一致性。
+    trigger_reason: 空间尺度可能改变传播时刻与出口选择。
+    metrics: [absolute_error, relative_error, rmse, coverage_jaccard, exit_agreement, route_overlap]
+    acceptance_criteria: {thresholds_from_audit_plan: true}
+    sample_design: {segment_lengths_from_audit_plan: true, deterministic: true}
+    cost_class: high
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [spatial_convergence_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-RUNTIME-COST
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: []
+    categories: [runtime_cost]
+    decision: selected
+    decision_rationale: 收敛尺度选择需要同时登记运行时间和资源成本，供截止时间内人工决策。
+    method: 对每个批准尺度记录运行时间、峰值内存和完成状态。
+    trigger_reason: 数值精度与比赛截止时间之间需要可审计的计算预算。
+    metrics: [runtime_seconds, peak_memory_mb, completion_status]
+    acceptance_criteria: {report_all_completed_scales: true}
+    sample_design: {same_environment_required: true}
+    cost_class: medium
+    dependencies: [VAL-SPATIAL-CONVERGENCE]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [runtime_cost_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-STRUCTURAL-FLOW-RULE
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: [ASM-BRANCH-EQUAL-FLOW]
+    categories: [structural_alternative_check, independent_cross_check]
+    decision: selected
+    decision_rationale: 高风险分流规则需要通过独立替代结构评估主要决策是否改变。
+    method: 将基线分流与已实现的独立替代策略进行匹配集合比较。
+    trigger_reason: 高风险机制规则可能改变主要决策。
+    metrics: [arrival_time_difference, coverage_jaccard, route_exit_agreement]
+    acceptance_criteria: {thresholds_from_audit_plan: true}
+    sample_design: {alternatives: [slope_weighted, capacity_weighted]}
+    cost_class: high
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [flow_rule_comparison_report]
+    status: draft
+    reviewer: null
+  - validation_id: VAL-STRUCTURAL-DIRECTION
+    model_ids: [MINE-FLOOD-MAIN]
+    assumption_ids: [ASM-DOWNHILL-DIRECTION, ASM-HORIZONTAL-NOMINAL-POTENTIAL]
+    categories: [structural_alternative_check]
+    decision: selected
+    decision_rationale: 巷道定向规则可能改变覆盖与路线可达性，需要进行结构替代比较。
+    method: 比较批准的巷道定向结构变体，并审计对象集合和主要决策变化。
+    trigger_reason: 定向规则可能改变水流覆盖和路线可达性。
+    metrics: [coverage_jaccard, route_overlap, exit_agreement]
+    acceptance_criteria: {thresholds_from_audit_plan: true}
+    sample_design: {variants_require_H4_approval: true}
+    cost_class: high
+    dependencies: [model_execution]
+    runner_id: mine_flood_legacy_runner
+    artifacts: [direction_rule_comparison_report]
+    status: draft
+    reviewer: null
+approval_ref: null
+extensions: {}

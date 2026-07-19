@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/audit_plan.schema.json",
+  "type": "object",
+  "required": ["schema_version", "default_level", "question_overrides", "model_overrides", "risk_summary", "deadline_at", "submission_buffer", "selected_experiments", "escalation_rules", "approved_at", "approval_ref", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "default_level": {"enum": ["A0", "A1", "A2", "A3"]},
+    "question_overrides": {"type": "object", "additionalProperties": {"enum": ["A0", "A1", "A2", "A3"]}},
+    "model_overrides": {"type": "object", "additionalProperties": {"enum": ["A0", "A1", "A2", "A3"]}},
+    "risk_summary": {"type": "array", "items": {"type": "string"}},
+    "deadline_at": {"type": ["string", "null"], "format": "date-time"},
+    "submission_buffer": {"type": ["string", "null"]},
+    "selected_experiments": {"type": "array", "items": {"type": "string"}},
+    "escalation_rules": {"type": "array", "items": {"type": "string"}},
+    "approved_at": {"type": ["string", "null"], "format": "date-time"},
+    "approval_ref": {"type": ["string", "null"]},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

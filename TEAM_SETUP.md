@@ -1,233 +1,168 @@
 # 队友上手指南 👋
+## 1. 准备工具
 
-欢迎加入这个数学建模工作流。这个文件的目标很简单：让队友从克隆仓库开始，一步一步把 VS Code、Python、LaTeX 和提交检查跑通。🙂
+- Git 与私有 GitHub 仓库权限
+- VS Code
+- Python 3.10 或更高版本
+- MiKTeX、XeLaTeX、BibTeX
+- Strawberry Perl，用于 `latexmk`
+- VS Code 扩展：LaTeX Workshop、Python、Pylance、Jupyter、GitLens、Markdown All in One、Error Lens、Code Spell Checker
 
-## 你会用到什么 🧩
+仓库、虚拟环境、数据、MiKTeX 包和临时复现目录建议放在 E 盘。不要把大文件放到 C 盘。
 
-请先确认电脑上已经有这些工具：
-
-- Git：用于克隆和同步仓库。
-- VS Code：作为主要工作台。
-- Python：用于数据处理、建模、画图和检查脚本。
-- MiKTeX：用于 LaTeX 编译。
-- Strawberry Perl：用于运行 `latexmk`。
-- VS Code 扩展：LaTeX Workshop、Python、Pylance、Jupyter、GitLens、Markdown All in One、Error Lens、Code Spell Checker。
-
-建议把项目放在 E 盘或其他非 C 盘位置。不要把大数据、虚拟环境和缓存放到 C 盘。💾
-
-## 第一步：克隆仓库 📦
-
-推荐使用带 submodule 的克隆命令：
+## 2. 克隆与安装
 
 ```powershell
 cd E:\AI
 git clone --recurse-submodules https://github.com/li1408/MathModelWorkspace.git
+cd MathModelWorkspace
+python -m venv competitions\CUMCM2026\.venv
+.\competitions\CUMCM2026\.venv\Scripts\python.exe -m pip install -r competitions\CUMCM2026\requirements.txt
+.\competitions\CUMCM2026\.venv\Scripts\python.exe -m pip install -e .
 ```
 
-如果你已经普通克隆了仓库，再运行：
+初始化项目本地工具并检查 LaTeX：
 
 ```powershell
-cd E:\AI\MathModelWorkspace
-git submodule update --init --recursive
+cd competitions\CUMCM2026
+.\scripts\setup_local_paths.ps1
+.\scripts\check_latex_env.ps1
 ```
 
-`resources/MathModelHub/` 是参考资料库，不是正式写论文的位置。
+如果 Perl 或 `gbt7714` 缺失，先修复环境；不要把环境错误误判成论文源码错误。
 
-## 第二步：打开正式项目 🧭
+## 3. 准备本地附件
 
-建议 VS Code 直接打开正式项目目录：
+题目 PDF 与附件不依赖公开 Git。把私有附件放入项目对应目录，再复制本地映射：
 
 ```powershell
-code E:\AI\MathModelWorkspace\competitions\CUMCM2026
+Copy-Item config\local\assets.local.example.yml config\local\assets.local.yml
 ```
 
-后续所有比赛相关工作都优先在这个目录里完成。
+工作流会使用正式配置中的 `asset_id + logical_uri + SHA256` 核验文件。本地映射只能保存于 `config/local/`，不得提交。
 
-## 第三步：创建 Python 环境 🐍
-
-进入项目目录：
-
-```powershell
-cd E:\AI\MathModelWorkspace\competitions\CUMCM2026
-```
-
-创建虚拟环境：
-
-```powershell
-python -m venv .venv
-```
-
-安装依赖：
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-检查 Python 流水线：
+## 4. 先验证旧流程
 
 ```powershell
 .\.venv\Scripts\python.exe 04_code\run_all.py --dry-run
+.\.venv\Scripts\python.exe -m unittest discover -s 04_code\tests -p "test_*.py"
 ```
 
-如果能看到数据检查、数据清洗、模型、验证、画图、导出结果等阶段列表，说明 Python 工作流已经可用。✅
+无参数 `04_code/run_all.py` 始终是现有 Q1-Q4 基线入口。
 
-## 第四步：配置 LaTeX 环境 📄
+## 5. 启动通用流程
 
-本项目默认使用：
-
-- `ctexart`
-- XeLaTeX
-- BibTeX
-- `gbt7714-numerical`
-- `latexmk -xelatex`
-
-运行本地路径初始化脚本：
+回到仓库根目录：
 
 ```powershell
-.\scripts\setup_local_paths.ps1
+cd E:\AI\MathModelWorkspace
+.\competitions\CUMCM2026\.venv\Scripts\python.exe -m workflow_core.cli.run_all `
+  --project competitions/CUMCM2026 --profile practice
 ```
 
-检查 LaTeX 环境：
+看到 `run_id=...` 后保存该编号。流程会在人工门禁前返回 `3`，审批请求位于：
+
+```text
+competitions/CUMCM2026/05_model_results/runs/<run_id>/logs/approval_requests/
+```
+
+实际需要审核的文件已经自动整理到：
+
+```text
+competitions/CUMCM2026/09_review_packages/<run_id>/
+```
+
+打开 `00_REVIEW_INDEX.csv`，按 `01_H1` 到 `08_H8` 的顺序处理。每个门禁只需：
+
+1. 在主 Codex 任务中说“开始审稿”，不需要自己整理或上传材料；
+2. 主 Codex 控制 Chrome，在 Google AI Studio 完成第一份独立审核；
+3. 主 Codex 将同一份冻结载荷发送给本题独立 Codex 审稿任务；
+4. 工作流保存两份回复并生成 `03_AI_REVIEW.md` 与 `04_AI_CROSSCHECK.md`；
+5. 队员完成 `04_HUMAN_CHECKLIST.md` 和 `05_HUMAN_DECISION.md`；
+6. 队员执行 `06_APPROVE_COMMAND.txt` 中的命令。
+
+如果本题尚未创建独立 Codex 审稿任务，流程会暂停并说明原因，不会伪造第二份审核。每套题只使用自己的审稿任务，避免不同题目的上下文互相污染。
+
+如果源文件发生变化，不要覆盖旧审核包；工作流会根据新 hash 生成新版本。旧包保留用于追溯。
+
+队员必须打开请求列出的文件，核对内容与 hash 后再批准：
 
 ```powershell
-.\scripts\check_latex_env.ps1
+.\competitions\CUMCM2026\.venv\Scripts\python.exe -m workflow_core.cli.approve `
+  --project competitions/CUMCM2026 --run-id <run_id> `
+  --gate H1 --human-id M1 --confirm-ai-review --confirm-human-review
 ```
 
-看到 Perl、latexmk、ctexart、gbt7714 都是 OK，才说明编译环境准备好了。
+继续运行：
 
-## 第五步：编译论文 🛠️
+```powershell
+.\competitions\CUMCM2026\.venv\Scripts\python.exe -m workflow_core.cli.run_all `
+  --project competitions/CUMCM2026 --profile practice --resume-run <run_id>
+```
 
-进入论文目录：
+配置或代码 hash 改变后不能恢复旧 run，应创建带 `parent_run_id` 的新 run：
+
+```powershell
+python -m workflow_core.cli.run_all --project competitions/CUMCM2026 `
+  --profile audit --parent-run <old_run_id>
+```
+
+## 6. H1-H8 检查内容
+
+| 门禁 | 人工检查 |
+| --- | --- |
+| H1 | 题目画像、题型与候选插件 |
+| H2 | 数据审计与预处理计划 |
+| H3 | 假设、候选模型与淘汰理由 |
+| H4 | 验证计划与 Audit 预算 |
+| H5 | 基线结果与基本不变量 |
+| H6 | 替代模型、结构敏感性和结论边界 |
+| H7 | 证据、图表、模板与论文初稿 |
+| H8 | 数值终审和论文合规终审 |
+
+以上八类审核包由 `workflow_core` 通用生成，换成其他国赛或校赛项目时操作完全相同。矿井题不是审核逻辑的一部分，只是当前回归案例。
+
+H8 示例：
+
+```powershell
+python -m workflow_core.cli.approve ... --gate H8 --human-id M1 `
+  --reviewer-role model_numeric_reviewer --confirm-human-review
+python -m workflow_core.cli.approve ... --gate H8 --human-id M2 `
+  --reviewer-role paper_compliance_reviewer --confirm-human-review
+```
+
+两个角色不能由同一 `human_id` 担任。
+
+H1、H3、H4 还会分别显示 `question_storyboard.yml` 的稳定投影。修改题目叙事字段只会使 H1 投影变化，修改模型字段只影响 H3，修改验证选择只影响 H4；任何对应 hash 变化都必须重新人工审批。
+
+analysis run 冻结后，队员再填写：
+
+```text
+07_paper/evidence/question_result_cards.csv
+07_paper/evidence/abstract_matrix.csv
+```
+
+不要提前填写预计数值。final 会检查每个小问是否完整、来源 run 是否等于冻结父 run，以及摘要中的数字是否出现在已验证 evidence 中。
+
+## 7. 编译与提交检查
 
 ```powershell
 cd E:\AI\MathModelWorkspace\competitions\CUMCM2026\07_paper
-```
-
-正式编译：
-
-```powershell
 ..\.local\bin\latexmk.cmd -xelatex -outdir=build main.tex
-```
 
-生成的 PDF 在：
-
-```text
-E:\AI\MathModelWorkspace\competitions\CUMCM2026\07_paper\build\main.pdf
-```
-
-`build/` 目录不会上传 GitHub，这是正常的。
-
-## 第六步：跑提交检查 🔍
-
-回到项目根目录：
-
-```powershell
-cd E:\AI\MathModelWorkspace\competitions\CUMCM2026
-```
-
-草稿检查：
-
-```powershell
+cd ..
 .\.venv\Scripts\python.exe 10_submission_check\check_submission.py --root . --mode draft
 ```
 
-说明：
+`final` 失败在论文尚未完成时是正常现象。占位符、敏感信息、未定义引用、缺失最终文件或错误 hash 都必须在提交前解决。
 
-- draft 模式允许论文里有 `\placeholder{}`，会报 WARNING。
-- final 模式不允许占位符，会报 ERROR。
-- 自动检查不能代替人工合规复核。最终提交前必须至少两个人交叉检查。👀
+## 8. 团队纪律 ✅
 
-## 放文件的位置 🗂️
-
-如果你不确定文件属于哪一类，先全部放到 `00_inbox/`，然后告诉队长或 Codex：
-
-```text
-题目和附件已经放到 00_inbox，请整理到正式目录。
-```
-
-| 内容 | 放到哪里 |
-| --- | --- |
-| 不会分类的题目和附件 | `00_inbox/` |
-| 题目文件 | `01_problem/` |
-| 官方通知和规则 | `00_official/` |
-| 原始数据 | `02_raw_data/` |
-| 清洗后数据 | `03_processed_data/final/` |
-| 中间数据 | `03_processed_data/interim/` |
-| Python 代码 | `04_code/` |
-| 模型输出 | `05_model_results/` |
-| 论文图 | `06_paper_assets/figures/` |
-| 论文表 | `06_paper_assets/tables/` |
-| LaTeX 论文 | `07_paper/` |
-| AI 使用记录 | `09_ai_logs/` |
-| 最终提交文件 | `11_final_submission/` |
-
-## 不要上传这些东西 🚫
-
-- `.venv/`
-- `.local/`
-- `00_inbox/` 里的真实题目、附件和大文件
-- `07_paper/build/`
-- LaTeX 辅助文件，例如 `.aux`、`.log`、`.xdv`
-- 本地敏感词文件：`10_submission_check/sensitive_terms.local.yml`
-- 大体积原始数据、临时数据、缓存文件
-- 未确认可公开的比赛材料
-
-如果有大文件，只记录在 `02_raw_data/data_manifest.csv`，并保存本地或私有备份。
-
-## 日常协作方式 🌱
-
-先同步：
-
-```powershell
-git pull
-git submodule update --init --recursive
-```
-
-查看状态：
-
-```powershell
-git status
-```
-
-建议分支：
-
-- `main`：稳定版本。
-- `dev`：日常整合版本。
-- `feature/*`：新模型、新章节、新分析。
-- `fix/*`：修复错误。
-
-提交前先确认没有误加入大文件、敏感文件和编译产物。
-
-## 常见问题 🧯
-
-### LaTeX Workshop 弹出宏包安装，但点了没反应
-
-先不要反复点弹窗。进入项目目录运行：
-
-```powershell
-.\scripts\check_latex_env.ps1
-```
-
-如果缺少包，优先修复 MiKTeX 环境，不要把问题误认为 LaTeX 源码错误。
-
-### GitHub 上看不到 MathModelHub 具体文件
-
-这是 submodule。运行：
-
-```powershell
-git submodule update --init --recursive
-```
-
-### final 检查为什么失败
-
-模板阶段失败是正常的。final 模式必须等到：
-
-- 占位符全部清除；
-- 敏感词本地配置完成；
-- 最终 PDF 放入 `11_final_submission/`；
-- SHA256 校验值生成并验证；
-- 学校和赛区附加规则确认。
-
-## 最后提醒 🌟
-
-这个仓库不是只为了“能编译”，而是为了让比赛过程更稳定：数据不乱、代码可追溯、论文能复核、最终提交有检查。按目录放文件，按命令做验证，队伍协作会轻松很多。🙂
+- 不修改 `02_raw_data/` 中的原始文件。
+- 不上传真实题目、私有附件、大型 run、身份映射和本机路径。
+- 不上传 `00_inbox/reference_papers/` 中的优秀论文、提取文本或渲染图。
+- 不把实时比赛原始附件、身份信息或 `config/local/` 上传给外部 AI；审核包默认不会复制这些内容。
+- 支撑材料 artifact 必须显式标记为 `anonymous_candidate`；默认 `internal` 和 `private_reference` 均不能打包。
+- 不填入虚构数据、结论、文献或官方规则。
+- Codex 不能批准 H1-H8；审批只能由实际队员完成。
+- 自动检查通过后仍要进行双人交叉复核。

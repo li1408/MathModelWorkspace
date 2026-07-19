@@ -1,0 +1,20 @@
+schema_version: 1
+plugin_id: network_routing
+version: 0.1.0
+sdk_version: "0.1"
+status: experimental
+capabilities: [graph_construction, static_routing, dynamic_routing]
+problem_types: [network, routing, evacuation]
+prerequisites: [node_edge_contract, algorithm_preconditions, explicit_objective]
+resource_estimate: {cpu: graph-dependent, memory: graph-dependent, runtime_class: unknown}
+deterministic: true
+network_access: false
+matlab_requirements: {required: false, toolboxes: []}
+entrypoint: plugins.network_routing.validator
+validation_templates: [graph_integrity, route_feasibility, algorithm_preconditions]
+validation_requirements:
+  - {category_id: graph_contract, criticality: hard, trigger_features: [], description: 检查节点、边、连通关系和标识映射合同。}
+  - {category_id: path_feasibility, criticality: hard, trigger_features: [], description: 检查路线连续性、约束满足和终点可达性。}
+  - {category_id: algorithm_preconditions, criticality: hard, trigger_features: [time_dependent_routing], description: 动态边权算法运行前必须数值检查其适用前提。}
+  - {category_id: structural_alternative_check, criticality: human_reviewable, trigger_features: [], description: 比较会影响主要决策的图结构或规则替代方案。}
+extension_schema: plugins/network_routing/extension.schema.json

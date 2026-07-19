@@ -1,0 +1,10 @@
+schema_version: 1
+profile_id: cumcm
+name: CUMCM 中文国赛练习项目
+scope: practice
+rules_file: competition_profiles/cumcm/rules.yml
+allowed_paper_formats: [pdf, word]
+submission_artifacts:
+  - electronic_paper
+  - supporting_materials
+extensions: {}

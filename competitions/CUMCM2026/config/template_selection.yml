@@ -1,0 +1,8 @@
+schema_version: 1
+template_id: ctexart_generic
+template_asset_id: TEMPLATE-CTEXART-GENERIC
+template_logical_uri: asset://template/ctexart-generic
+adapter_id: ctexart_generic
+status: previewed
+approval_ref: null
+extensions: {}

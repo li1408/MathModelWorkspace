@@ -1,0 +1,20 @@
+schema_version: 1
+plugin_id: mechanism_physics
+version: 0.1.0
+sdk_version: "0.1"
+status: experimental
+capabilities: [conservation_laws, event_driven_mechanisms, bounded_physical_approximations]
+problem_types: [mechanism_modeling, physical_process]
+prerequisites: [declared_units, given_conditions_separated, basic_invariants]
+resource_estimate: {cpu: problem-dependent, memory: problem-dependent, runtime_class: unknown}
+deterministic: true
+network_access: false
+matlab_requirements: {required: false, toolboxes: []}
+entrypoint: plugins.mechanism_physics.validator
+validation_templates: [conservation, limiting_cases, parameter_bounds]
+validation_requirements:
+  - {category_id: units_dimensions, criticality: hard, trigger_features: [], description: 检查变量单位、量纲和换算的一致性。}
+  - {category_id: basic_invariants, criticality: hard, trigger_features: [], description: 检查守恒关系或模型必须满足的基本不变量。}
+  - {category_id: boundary_limit_cases, criticality: human_reviewable, trigger_features: [], description: 检查边界条件或极限情形是否符合机制解释。}
+  - {category_id: independent_cross_check, criticality: human_reviewable, trigger_features: [], description: 使用独立关系或替代实现交叉核验关键结果。}
+extension_schema: null

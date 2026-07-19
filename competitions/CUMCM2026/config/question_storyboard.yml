@@ -1,0 +1,89 @@
+schema_version: 1
+questions:
+  - question_id: Q1
+    decision_or_scientific_goal: 计算单突水点情景下两座矿井全部正式巷道的首次到达与充满时刻。
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, PROBLEM-DOCUMENT]
+    required_outputs: [single_source_water_arrival_and_fill_times]
+    core_difficulty: 在三维网络和题面传播规则下保持事件时间、正式巷道映射与质量关系一致。
+    candidate_models: [MINE-FLOOD-MAIN]
+    selected_model: MINE-FLOOD-MAIN
+    selection_rationale: 事件驱动网络模型能直接表达题面传播过程，并保留可审计的到达、充满和质量状态。
+    key_assumptions: [ASM-HORIZONTAL-NOMINAL-POTENTIAL]
+    algorithm_prerequisites: [water propagation events remain temporally monotone, mass conservation tolerance is satisfied]
+    solver_plan: 运行经审批配置的单源事件驱动传播流程，并导出正式巷道级结果。
+    validation_plan:
+      - {validation_id: VAL-MASS-CONSERVATION, decision: selected, decision_rationale: 检查机制模型的基本不变量。}
+      - {validation_id: VAL-OUTPUT-CONTRACT, decision: selected, decision_rationale: 检查官方结果工作簿合同。}
+      - {validation_id: VAL-STRUCTURAL-FLOW-RULE, decision: selected, decision_rationale: 检查分流规则对主要结果的影响。}
+      - {validation_id: VAL-STRUCTURAL-DIRECTION, decision: selected, decision_rationale: 检查方向规则对覆盖集合的影响。}
+    expected_figures_tables: [single_source_propagation_figure, q1_result_summary_table]
+    claim_boundaries: [所有结论仅适用于题面给定传播规则和经审批的输入附件。]
+    paper_outline: [问题分析, 模型建立, 模型求解, 结果验证, 条件性小结]
+    reviewer: null
+    status: draft
+    extensions: {}
+  - question_id: Q2
+    decision_or_scientific_goal: 为每个给定工人位置求得满足动态水深与速度约束的可行逃生路线。
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, Q1-WATER-STATE]
+    required_outputs: [single_source_escape_routes]
+    core_difficulty: 路线通行时间依赖出发时刻和水流状态，算法前提必须先经数值检验。
+    candidate_models: [MINE-FLOOD-MAIN]
+    selected_model: MINE-FLOOD-MAIN
+    selection_rationale: 时间依赖网络路线模型能逐边核验动态约束，并输出可复查的节点序列和到达时刻。
+    key_assumptions: [ASM-HORIZONTAL-NOMINAL-POTENTIAL, ASM-ROUTING-PRECONDITION]
+    algorithm_prerequisites: [the selected routing algorithm satisfies its tested preconditions]
+    solver_plan: 在单源水流状态上运行经前提检验的路线算法；前提失败时按配置切换后备算法或阻断正式路线。
+    validation_plan:
+      - {validation_id: VAL-ROUTE-FEASIBILITY, decision: selected, decision_rationale: 检查路线连续、可走并到达出口。}
+      - {validation_id: VAL-ALGORITHM-PRECONDITION, decision: selected, decision_rationale: 检查时间依赖算法适用前提。}
+      - {validation_id: VAL-OUTPUT-CONTRACT, decision: selected, decision_rationale: 检查官方结果工作簿合同。}
+    expected_figures_tables: [single_source_escape_route_figure, q2_route_summary_table]
+    claim_boundaries: [只有通过路线可行性和算法前提检查的路线才能写入正式结论。]
+    paper_outline: [问题分析, 路线模型, 算法前提, 求解结果, 可行性检验, 条件性小结]
+    reviewer: null
+    status: draft
+    extensions: {}
+  - question_id: Q3
+    decision_or_scientific_goal: 计算第二突水点按题面时刻加入后的多源传播结果。
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, PROBLEM-DOCUMENT]
+    required_outputs: [multi_source_water_arrival_and_fill_times]
+    core_difficulty: 多源事件需要按启动时刻合并，同时保持正式巷道映射、时间顺序和质量关系。
+    candidate_models: [MINE-FLOOD-MAIN]
+    selected_model: MINE-FLOOD-MAIN
+    selection_rationale: 现有事件驱动机制可以显式叠加多个有启动时刻的水源，并保留逐事件审计记录。
+    key_assumptions: [ASM-HORIZONTAL-NOMINAL-POTENTIAL]
+    algorithm_prerequisites: [water propagation events remain temporally monotone, mass conservation tolerance is satisfied]
+    solver_plan: 运行经审批配置的多源事件流程，并分别导出两座矿井正式巷道结果。
+    validation_plan:
+      - {validation_id: VAL-MASS-CONSERVATION, decision: selected, decision_rationale: 检查多源机制模型的基本不变量。}
+      - {validation_id: VAL-OUTPUT-CONTRACT, decision: selected, decision_rationale: 检查官方结果工作簿合同。}
+      - {validation_id: VAL-STRUCTURAL-FLOW-RULE, decision: selected, decision_rationale: 检查分流规则对多源传播的影响。}
+      - {validation_id: VAL-STRUCTURAL-DIRECTION, decision: selected, decision_rationale: 检查方向规则对覆盖集合的影响。}
+    expected_figures_tables: [multi_source_propagation_figure, q3_result_summary_table]
+    claim_boundaries: [多源结论仅适用于题面启动时刻和经审批的传播规则。]
+    paper_outline: [问题分析, 多源模型扩展, 模型求解, 结果验证, 条件性小结]
+    reviewer: null
+    status: draft
+    extensions: {}
+  - question_id: Q4
+    decision_or_scientific_goal: 在第二突水点通知时刻重新规划各工人的可行逃生路线。
+    inputs: [RAW-NETWORK-1, RAW-NETWORK-2, Q3-WATER-STATE]
+    required_outputs: [replanned_escape_routes]
+    core_difficulty: 必须从通知时刻的工人位置和多源水流状态重新计算动态可行路线。
+    candidate_models: [MINE-FLOOD-MAIN]
+    selected_model: MINE-FLOOD-MAIN
+    selection_rationale: 动态路线模型能从指定通知状态重新出发，并逐边核验之后的水深和速度约束。
+    key_assumptions: [ASM-HORIZONTAL-NOMINAL-POTENTIAL, ASM-ROUTING-PRECONDITION]
+    algorithm_prerequisites: [the selected routing algorithm satisfies its tested preconditions]
+    solver_plan: 在多源水流状态和通知时刻上重新运行经前提检验的路线算法。
+    validation_plan:
+      - {validation_id: VAL-ROUTE-FEASIBILITY, decision: selected, decision_rationale: 检查重规划路线连续、可走并到达出口。}
+      - {validation_id: VAL-ALGORITHM-PRECONDITION, decision: selected, decision_rationale: 检查时间依赖算法适用前提。}
+      - {validation_id: VAL-OUTPUT-CONTRACT, decision: selected, decision_rationale: 检查官方结果工作簿合同。}
+    expected_figures_tables: [replanned_escape_route_figure, q4_route_summary_table]
+    claim_boundaries: [只有在通知状态和算法前提均通过检查时才能声称路线有效。]
+    paper_outline: [问题分析, 动态重规划模型, 求解结果, 可行性检验, 条件性小结]
+    reviewer: null
+    status: draft
+    extensions: {}
+extensions: {}

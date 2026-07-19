@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/assumptions_registry.schema.json",
+  "type": "object",
+  "required": ["schema_version", "assumptions", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["assumption_id", "name", "category", "description", "source_ref", "rationale", "risk_level", "decision_impact", "affected_questions", "affected_models", "validation_ids", "validation_methods", "alternative_models", "fallback_action", "paper_section", "status", "owner", "reviewer", "reviewed_by", "reviewed_at", "resolution_note", "evidence_ids", "literature_refs"],
+        "properties": {
+          "assumption_id": {"type": "string"},
+          "name": {"type": "string", "minLength": 1},
+          "category": {"enum": ["given_condition", "data_assumption", "mechanism_assumption", "statistical_assumption", "algorithmic_assumption", "numerical_assumption", "decision_assumption"]},
+          "description": {"type": "string", "minLength": 1},
+          "source_ref": {"type": "string", "minLength": 1},
+          "rationale": {"type": "string", "minLength": 1},
+          "risk_level": {"enum": ["low", "medium", "high"]},
+          "decision_impact": {"type": "string", "minLength": 1},
+          "affected_questions": {"type": "array", "items": {"type": "string"}},
+          "affected_models": {"type": "array", "items": {"type": "string"}},
+          "validation_ids": {"type": "array", "items": {"type": "string"}},
+          "validation_methods": {"type": "array", "items": {"type": "string"}},
+          "alternative_models": {"type": "array", "items": {"type": "string"}},
+          "fallback_action": {"type": "string", "minLength": 1},
+          "paper_section": {"type": "string", "minLength": 1},
+          "status": {"enum": ["unreviewed", "validated", "bounded", "robust_under_alternatives", "accepted_with_limitation", "not_applicable", "unresolved"]},
+          "owner": {"type": "string"},
+          "reviewer": {"type": ["string", "null"]},
+          "reviewed_by": {"type": ["string", "null"]},
+          "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+          "resolution_note": {"type": ["string", "null"]},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}},
+          "literature_refs": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

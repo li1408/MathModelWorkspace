@@ -20,6 +20,11 @@ BASE_RULES = """\
 rules_version: 2
 national_rules:
   electronic_paper_max_size_mb: 20
+official_rule_source:
+  status: confirmed
+  asset_id: TEST-OFFICIAL
+  sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  retrieved_at: 2026-07-15T00:00:00Z
 local_rules:
   school_deadline: null
 required_files:
@@ -160,6 +165,52 @@ class SubmissionCheckTests(unittest.TestCase):
             rules = check_submission.load_yaml(root / "10_submission_check/submission_rules.yml")
             files = list(check_submission.iter_files(root, rules))
             self.assertNotIn(hidden_file, files)
+
+    def test_private_inbox_is_excluded_by_project_rules(self):
+        project_rules = check_submission.load_yaml(
+            SCRIPT.parent / "submission_rules.yml"
+        )
+
+    def test_internal_review_packages_are_excluded_by_project_rules(self):
+        project_rules = check_submission.load_yaml(
+            SCRIPT.parent / "submission_rules.yml"
+        )
+        self.assertTrue(
+            check_submission.is_in_excluded_dir(
+                "09_review_packages/RUN/01_H1_problem_definition/review.md",
+                project_rules["scan"]["excluded_dirs"],
+            )
+        )
+        self.assertTrue(
+            check_submission.is_in_excluded_dir(
+                "00_inbox/reference_papers/example.pdf",
+                project_rules["scan"]["excluded_dirs"],
+            )
+        )
+
+    def test_console_text_escapes_unencodable_characters(self):
+        rendered = check_submission.console_text("finding:\u121d", "gbk")
+        self.assertIn("\\u121d", rendered)
+
+    def test_pending_official_source_warns_in_draft_and_errors_in_final(self):
+        temp_dir, root = self.make_root()
+        with temp_dir:
+            rules_path = root / "10_submission_check/submission_rules.yml"
+            rules_path.write_text(
+                BASE_RULES.replace("status: confirmed", "status: pending_confirmation")
+                .replace("asset_id: TEST-OFFICIAL", "asset_id: null")
+                .replace("sha256: " + "a" * 64, "sha256: null")
+                .replace("retrieved_at: 2026-07-15T00:00:00Z", "retrieved_at: null"),
+                encoding="utf-8",
+            )
+            draft = self.run_checks(root, mode="draft")
+            final = self.run_checks(root, mode="final")
+            self.assertTrue(
+                any(i.rule == "official_rules_pending" and i.severity == "WARNING" for i in draft)
+            )
+            self.assertTrue(
+                any(i.rule == "official_rules_pending" and i.severity == "ERROR" for i in final)
+            )
 
     def test_final_mode_verifies_sha256(self):
         temp_dir, root = self.make_root()

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/project.schema.json",
+  "type": "object",
+  "required": ["schema_version", "project_id", "competition_profile_id", "case_id", "main_model_card", "default_profile", "default_audit_level", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "project_id": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/identifier"},
+    "competition_profile_id": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/identifier"},
+    "case_id": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/identifier"},
+    "main_model_card": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/relativePath"},
+    "default_profile": {"enum": ["practice", "audit", "final"]},
+    "default_audit_level": {"enum": ["A0", "A1", "A2", "A3"]},
+    "deadline_at": {"type": ["string", "null"], "format": "date-time"},
+    "submission_buffer": {"type": ["string", "null"]},
+    "active_template_id": {"type": ["string", "null"]},
+    "review_policy": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/relativePath"},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,47 @@
+schema_version: 1
+model_id: MINE-FLOOD-MAIN
+plugin_ids: [mechanism_physics, network_routing, spatial_numerical]
+role: main
+status: draft
+question_ids: [Q1, Q2, Q3, Q4]
+objective: 在题面给定传播规则下计算水流状态，并据此生成动态逃生路线。
+inputs: [RAW-NETWORK-1, RAW-NETWORK-2, PROBLEM-DOCUMENT]
+outputs:
+  - water_arrival_and_fill_times
+  - worker_escape_routes
+  - official_excel_results
+assumption_ids:
+  - ASM-BRANCH-EQUAL-FLOW
+  - ASM-DOWNHILL-DIRECTION
+  - ASM-HORIZONTAL-NOMINAL-POTENTIAL
+  - ASM-ROUTING-PRECONDITION
+parameters:
+  source: approved_problem_statement_and_legacy_configuration
+  editing_policy: parameters_must_be_changed_through_reviewed_configuration
+algorithm_prerequisites:
+  - water propagation events remain temporally monotone
+  - mass conservation tolerance is satisfied
+  - the selected routing algorithm satisfies its tested preconditions
+metrics:
+  - water_arrival_time
+  - roadway_fill_time
+  - escape_arrival_time
+  - reached_exit
+  - mass_balance_residual
+validations:
+  - VAL-MASS-CONSERVATION
+  - VAL-ROUTE-FEASIBILITY
+  - VAL-ALGORITHM-PRECONDITION
+  - VAL-OUTPUT-CONTRACT
+runtime: python
+runner_id: mine_flood_legacy_runner
+failure_modes:
+  - invalid network references
+  - mass conservation failure
+  - routing algorithm precondition failure
+  - missing official result workbook
+discard_reason: null
+extensions:
+  mechanism_physics: {}
+  network_routing: {}
+  spatial_numerical: {}

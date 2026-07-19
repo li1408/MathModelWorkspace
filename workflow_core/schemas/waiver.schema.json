@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/waiver.schema.json",
+  "type": "object",
+  "required": ["schema_version", "waivers", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "waivers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["waiver_id", "rule_id", "path", "match", "expires_at", "requested_by", "approved_by", "justification", "risk", "status"],
+        "properties": {
+          "waiver_id": {"type": "string"},
+          "rule_id": {"type": "string"},
+          "path": {"type": "string"},
+          "match": {"type": "string"},
+          "expires_at": {"type": "string", "format": "date-time"},
+          "requested_by": {"enum": ["M1", "M2", "M3"]},
+          "approved_by": {"enum": ["M1", "M2", "M3"]},
+          "justification": {"type": "string", "minLength": 1},
+          "risk": {"type": "string", "minLength": 1},
+          "status": {"enum": ["active", "expired", "revoked"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "additionalProperties": false
+}

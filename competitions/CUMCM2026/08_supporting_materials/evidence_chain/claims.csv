@@ -1,1 +1,1 @@
-claim_id,paper_section,claim_text,importance,reviewer,status
+claim_id,question_id,paper_section,claim_text,claim_kind,importance,conditions,limitations,status,owner,reviewer,reviewed_at

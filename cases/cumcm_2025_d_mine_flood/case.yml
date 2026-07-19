@@ -1,0 +1,7 @@
+schema_version: 1
+case_id: cumcm_2025_d_mine_flood
+project_relative_path: competitions/CUMCM2026
+runner_id: mine_flood_legacy_runner
+runner_module: cases.cumcm_2025_d_mine_flood.runner
+plugin_ids: [mechanism_physics, network_routing, spatial_numerical]
+status: active

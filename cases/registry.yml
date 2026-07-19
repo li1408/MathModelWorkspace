@@ -1,0 +1,5 @@
+schema_version: 1
+cases:
+  - case_id: cumcm_2025_d_mine_flood
+    status: active
+    manifest: cases/cumcm_2025_d_mine_flood/case.yml

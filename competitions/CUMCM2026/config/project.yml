@@ -1,20 +1,12 @@
-project:
-  name: CUMCM2026
-  competition: "2026 高教社杯全国大学生数学建模竞赛"
-  competition_type: "CUMCM 中文国赛本科组"
-  language: zh-CN
-  paper_engine: xelatex
-  paper_class: ctexart
-  status: planning
-
-privacy:
-  github_visibility: private
-  allowed_collaborators: 3
-  github_pages: false
-  public_release_allowed: false
-
-rules:
-  official_rules_source: "需要根据当年全国组委会及赛区官方文件确认"
-  do_not_mix_mcm_icm: true
-  require_manual_final_review: true
-  require_two_person_cross_check: true
+schema_version: 1
+project_id: CUMCM2026
+competition_profile_id: cumcm
+case_id: cumcm_2025_d_mine_flood
+main_model_card: config/model_cards/mine_flood_main.yml
+default_profile: practice
+default_audit_level: A2
+deadline_at: null
+submission_buffer: null
+active_template_id: ctexart_generic
+review_policy: config/review_agents.yml
+extensions: {}

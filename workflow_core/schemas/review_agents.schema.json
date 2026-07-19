@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmodel.local/schemas/review_agents.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "review_policy_version",
+    "shared_payload_required",
+    "reviewers",
+    "human_approval_required",
+    "ai_can_approve",
+    "extensions"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "review_policy_version": {"const": 2},
+    "shared_payload_required": {"const": true},
+    "reviewers": {
+      "type": "object",
+      "required": ["gemini_ai_studio", "codex_independent_task"],
+      "properties": {
+        "gemini_ai_studio": {"$ref": "#/$defs/reviewer"},
+        "codex_independent_task": {"$ref": "#/$defs/reviewer"}
+      },
+      "additionalProperties": false
+    },
+    "human_approval_required": {"const": true},
+    "ai_can_approve": {"const": false},
+    "extensions": {"$ref": "https://mathmodel.local/schemas/common.schema.json#/$defs/extensions"}
+  },
+  "$defs": {
+    "reviewer": {
+      "type": "object",
+      "required": [
+        "provider",
+        "model_id",
+        "review_role",
+        "interaction_mode",
+        "blind_review",
+        "network_access",
+        "workspace_write_access"
+      ],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "review_role": {"type": "string", "minLength": 1},
+        "interaction_mode": {
+          "enum": ["codex_browser_operator", "independent_task_chat"]
+        },
+        "blind_review": {"const": true},
+        "network_access": {"type": "boolean"},
+        "workspace_write_access": {"const": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

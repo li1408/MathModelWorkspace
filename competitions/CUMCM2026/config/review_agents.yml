@@ -1,0 +1,23 @@
+schema_version: 1
+review_policy_version: 2
+shared_payload_required: true
+reviewers:
+  gemini_ai_studio:
+    provider: google_ai_studio
+    model_id: gemini-3.1-pro-preview
+    review_role: model_numeric_reviewer
+    interaction_mode: codex_browser_operator
+    blind_review: true
+    network_access: false
+    workspace_write_access: false
+  codex_independent_task:
+    provider: openai_codex
+    model_id: session_selected
+    review_role: paper_evidence_adversarial_reviewer
+    interaction_mode: independent_task_chat
+    blind_review: true
+    network_access: false
+    workspace_write_access: false
+human_approval_required: true
+ai_can_approve: false
+extensions: {}

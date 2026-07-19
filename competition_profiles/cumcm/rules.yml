@@ -1,0 +1,146 @@
+schema_version: 1
+profile_id: cumcm
+confirmed_official: []
+confirmed_local: []
+pending_confirmation:
+  - rule_id: abstract_page_limit
+    description: 摘要原则上不超过 1 页。
+    constraint_operator: max
+    value: 1
+    unit: page
+    hard_rule: false
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: manual
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: body_has_no_toc
+    description: 正文不设置目录。
+    constraint_operator: forbidden
+    value: true
+    unit: null
+    hard_rule: true
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: mixed
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: body_page_limit
+    description: 正文页数不超过 30 页，附录另计。
+    constraint_operator: max
+    value: 30
+    unit: page
+    hard_rule: true
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: mixed
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: appendix_page_limit
+    description: 附录不设置统一页数上限。
+    constraint_operator: required
+    value: false
+    unit: null
+    hard_rule: false
+    submission_critical: false
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: manual
+    notes: 待补充官方原文快照后确认具体表述。
+  - rule_id: paper_format
+    description: 电子论文格式为 PDF 或 Word，建议 PDF。
+    constraint_operator: enum_subset
+    value: [pdf, word]
+    unit: null
+    hard_rule: true
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: automatic
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: paper_file_size_limit
+    description: 电子论文文件大小不超过 20 MB。
+    constraint_operator: max
+    value: 20
+    unit: MB
+    hard_rule: true
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: automatic
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: support_archive_size_limit
+    description: 支撑材料使用 ZIP 或 RAR，文件大小不超过 20 MB。
+    constraint_operator: max
+    value: 20
+    unit: MB
+    hard_rule: true
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: automatic
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: special_pages_excluded
+    description: 电子论文不包含承诺书和编号专用页。
+    constraint_operator: forbidden
+    value: true
+    unit: null
+    hard_rule: true
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: manual
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: anonymous_submission
+    description: 论文、附录和支撑材料不得出现身份、学校和赛区信息。
+    constraint_operator: forbidden
+    value: true
+    unit: null
+    hard_rule: true
+    submission_critical: true
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: mixed
+    notes: 既有人工记录，待补充官方原文快照后确认。
+  - rule_id: upload_filename_constraint
+    description: 全国系统对上传文件名不作人工要求并会自动重命名。
+    constraint_operator: required
+    value: false
+    unit: null
+    hard_rule: false
+    submission_critical: false
+    source_asset_id: null
+    source_hash: null
+    retrieved_at: null
+    effective_from: null
+    valid_until: null
+    enforcement: manual
+    notes: 待补充官方原文快照后确认具体表述。
+extensions: {}

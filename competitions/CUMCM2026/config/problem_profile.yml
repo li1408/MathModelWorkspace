@@ -1,0 +1,28 @@
+schema_version: 1
+problem_id: cumcm_2025_d_mine_flood
+question_ids: [Q1, Q2, Q3, Q4]
+problem_types: [mechanism_physics, network_routing, spatial_numerical]
+data_types: [document, tabular, network, spatial]
+output_types: [water_propagation_times, escape_routes, excel_submission_files, figures, paper]
+model_features:
+  - dynamic_network_state
+  - event_driven_propagation
+  - time_dependent_routing
+  - three_dimensional_geometry
+candidate_plugins: [mechanism_physics, network_routing, spatial_numerical]
+validation_needs:
+  - raw_data_integrity
+  - mass_conservation
+  - route_feasibility
+  - algorithm_precondition_check
+  - official_excel_contract
+  - sensitivity_and_structure_comparison
+major_risks:
+  - branch_flow_rule_changes_arrival_times
+  - edge_direction_rule_changes_reachable_set
+  - routing_precondition_may_not_hold
+  - numerical_discretization_may_change_routes
+status: draft
+generated_by: codex
+approval_ref: null
+extensions: {}
