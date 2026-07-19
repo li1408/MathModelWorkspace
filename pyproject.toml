@@ -6,6 +6,9 @@ build-backend = "setuptools.build_meta"
 name = "mathmodel-workflow"
 version = "0.1.0"
 description = "Risk-driven workflow core for Chinese mathematical modeling competitions"
+authors = [
+  { name = "140", email = "kli103972@gmail.com" },
+]
 requires-python = ">=3.10"
 dependencies = [
   "jsonschema>=4.23",
@@ -13,6 +16,10 @@ dependencies = [
   "pandas>=2.2",
   "openpyxl>=3.1",
 ]
+
+[project.urls]
+Homepage = "https://github.com/li1408"
+Repository = "https://github.com/li1408/MathModelWorkspace"
 
 [tool.setuptools.packages.find]
 include = ["workflow_core*", "plugins*", "cases*"]

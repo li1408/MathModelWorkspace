@@ -2,6 +2,12 @@
 
 面向 CUMCM 国赛和中文校赛的可复现数学建模工作区。Python 负责统一调度和计算，LaTeX/Word 负责论文，Codex 负责生成初稿、修改、检查与修复，所有正式结论必须经过人工门禁并能追溯到冻结运行。
 
+> **工作流作者：140**
+>
+> - 邮箱：[kli103972@gmail.com](mailto:kli103972@gmail.com)
+> - GitHub：[github.com/li1408](https://github.com/li1408)
+> - 归属与引用说明见 [NOTICE.md](NOTICE.md) 和 [CITATION.cff](CITATION.cff)。这些署名只属于工作流仓库，不会写入竞赛论文或匿名提交材料。
+
 ## 这套工作流解决什么问题 🎯
 
 - 题目、原始数据、处理后数据、代码、结果和论文各自归位。

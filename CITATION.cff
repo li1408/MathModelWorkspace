@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this workflow, please cite the repository and retain the attribution notice."
+title: "MathModelWorkspace"
+type: software
+authors:
+  - family-names: "140"
+    email: "kli103972@gmail.com"
+repository-code: "https://github.com/li1408/MathModelWorkspace"
+url: "https://github.com/li1408"
