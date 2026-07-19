@@ -93,6 +93,7 @@ competitions/<project>/09_review_packages/<run_id>/
 └── 01_H1_problem_definition_<hash>/
     ├── 01_review_files/
     ├── 02_review_payload/
+    ├── 02_ai_studio_upload/
     ├── 02A_GEMINI_AI_STUDIO_PROMPT.md
     ├── 02B_CODEX_REVIEWER_BRIEF.md
     ├── 03A_GEMINI_REVIEW.md
@@ -104,7 +105,7 @@ competitions/<project>/09_review_packages/<run_id>/
     └── 06_APPROVE_COMMAND.txt
 ```
 
-你不需要自己上传文件。到达门禁后，在主 Codex 任务中说“开始审稿”：主 Codex 会控制已登录的 Chrome，把共享载荷交给 Google AI Studio；同一载荷再交给本题独立 Codex 审稿任务。两份回复经 hash 登记并合并后，队员才填写人工清单和结论。完整小白步骤见 [双 AI 审稿指南](docs/DUAL_AI_REVIEW_GUIDE.md)。
+到达门禁后，在主 Codex 任务中说“开始审稿”。Codex 会完成载荷校验并把 Google AI Studio 需要的材料统一放入 `02_ai_studio_upload/`；队员只需在 AI Studio 中全选该目录的 `.txt` 文件并粘贴提示词。主 Codex负责登记两份独立回复、生成交叉核对并协助人工裁决。完整小白步骤见 [双 AI 审稿指南](docs/DUAL_AI_REVIEW_GUIDE.md)。
 
 ```powershell
 .\competitions\CUMCM2026\.venv\Scripts\python.exe -m workflow_core.cli.approve `

@@ -29,15 +29,15 @@
 1. 找到当前门禁最新的审核目录；
 2. 验证 `02_review_payload/` 中每个文件的 SHA256；
 3. 检查材料是否含身份信息、个人路径或禁止外发内容；
-4. 控制已登录的 Chrome 打开 Google AI Studio；
-5. 上传共享载荷并使用 `02A_GEMINI_AI_STUDIO_PROMPT.md`；
-6. 将 Gemini 完整回复登记到 `03A_GEMINI_REVIEW.md`；
-7. 把相同载荷和 `02B_CODEX_REVIEWER_BRIEF.md` 发送给独立 Codex 审稿任务；
-8. 将独立审稿任务的最终意见登记到 `03B_CODEX_REVIEW.md`；
-9. 生成 `03_AI_REVIEW.md` 和 `04_AI_CROSSCHECK.md`；
-10. 提醒队员处理双方 ERROR、分歧和需要人工确认的事项。
+4. 生成 `02_ai_studio_upload/`，为避免扩展名兼容问题，把载荷复制为内容相同的 `.txt` 文件；
+5. 告诉队员需要上传的唯一目录和提示词位置；
+6. 队员在已登录的 Google AI Studio 中全选上传 `02_ai_studio_upload/`，再粘贴 `02A_GEMINI_AI_STUDIO_PROMPT.md`；
+7. 队员将 Gemini 完整回复发回主 Codex，由主 Codex登记到 `03A_GEMINI_REVIEW.md`；
+8. 主 Codex把相同载荷和 `02B_CODEX_REVIEWER_BRIEF.md` 发送给独立 Codex 审稿任务；
+9. 将独立审稿任务的最终意见登记到 `03B_CODEX_REVIEW.md`；
+10. 生成 `03_AI_REVIEW.md` 和 `04_AI_CROSSCHECK.md`，提醒队员处理双方 ERROR、分歧和需要人工确认的事项。
 
-如果 Chrome 没有登录 Google AI Studio，主 Codex会停下来请你登录。如果独立审稿任务尚未创建，也会暂停，不会伪造审核结果。
+队员不需要自行整理、改名或压缩审核材料，只负责全选上传兼容目录。如果独立审稿任务尚未创建，流程会暂停并征得用户同意，不会伪造审核结果。
 
 ## 两个登记命令
 

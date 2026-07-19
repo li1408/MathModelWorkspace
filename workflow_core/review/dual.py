@@ -27,7 +27,7 @@ REVIEWERS = {
         "model_id": GEMINI_MODEL,
         "review_role": "model_numeric_reviewer",
         "review_file": "03A_GEMINI_REVIEW.md",
-        "interaction_mode": "codex_browser_operator",
+        "interaction_mode": "manual_user_upload",
     },
     "codex_independent_task": {
         "provider": "openai_codex",
@@ -204,8 +204,8 @@ def _sections(text: str) -> dict[str, list[str]]:
             active = line
         elif line in {"需要人工确认", "逐项核对"}:
             active = None
-        elif active and line.startswith("-"):
-            rendered = line[1:].strip()
+        elif active and raw.startswith("- "):
+            rendered = raw[2:].strip()
             if rendered not in {"无", "无。", "None", "NONE"}:
                 sections[active].append(rendered)
     return sections

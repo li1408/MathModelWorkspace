@@ -176,9 +176,12 @@ def _gemini_prompt(gate_id: str, title: str, focus: list[str], payload_hash: str
     return f"""# Gemini 模型与数值独立审核
 
 你是数学建模项目的模型与数值审稿人。本次门禁为 `{gate_id}`：{title}。
-只审核 `02_review_payload/` 中的共享载荷；共享载荷 SHA256 为：
+只审核 `02_ai_studio_upload/` 中上传的共享载荷副本；共享载荷 SHA256 为：
 
 `{payload_hash}`
+
+为兼容 Google AI Studio，上传文件统一在原文件名末尾追加 `.txt`。
+这些文件与 `02_review_payload/` 中对应原文件逐字节一致；审核时应忽略最后的 `.txt` 后缀。
 
 不得联网、运行工具、访问仓库其他目录、编造数据或代替人工批准。不得读取另一个审稿人的结果。
 每个发现必须指出审核材料中的文件或字段；确定性 hash、守恒检验和程序合同优先于 AI 意见。
@@ -581,6 +584,25 @@ def prepare_review_package(
         encoding="utf-8",
     )
 
+    ai_studio_upload_dir = package / "02_ai_studio_upload"
+    ai_studio_upload_dir.mkdir()
+    ai_studio_upload_files: list[dict[str, Any]] = []
+    for source in sorted(payload_dir.iterdir(), key=lambda item: item.name):
+        if not source.is_file():
+            continue
+        destination = ai_studio_upload_dir / f"{source.name}.txt"
+        shutil.copy2(source, destination)
+        ai_studio_upload_files.append(
+            {
+                "original_relative_path": source.relative_to(payload_dir).as_posix(),
+                "upload_relative_path": destination.relative_to(
+                    ai_studio_upload_dir
+                ).as_posix(),
+                "sha256": sha256_file(destination),
+                "size_bytes": destination.stat().st_size,
+            }
+        )
+
     manifest = {
         "schema_version": 1,
         "review_policy_version": 2,
@@ -591,6 +613,8 @@ def prepare_review_package(
         "ai_tool": "Google AI Studio / Gemini + Codex independent task",
         "required_ai_reviewers": ["gemini_ai_studio", "codex_independent_task"],
         "shared_payload_sha256": payload_fingerprint,
+        "gemini_upload_directory": "02_ai_studio_upload",
+        "gemini_upload_files": ai_studio_upload_files,
         "ai_reviews": [
             {
                 "reviewer_id": "gemini_ai_studio",
@@ -598,7 +622,7 @@ def prepare_review_package(
                 "model_id": GEMINI_MODEL,
                 "review_role": "model_numeric_reviewer",
                 "review_file": "03A_GEMINI_REVIEW.md",
-                "interaction_mode": "codex_browser_operator",
+                "interaction_mode": "manual_user_upload",
                 "review_sha256": None,
                 "completed_at": None,
             },
@@ -621,8 +645,8 @@ def prepare_review_package(
     (package / "00_README.md").write_text(
         f"""# {gate_id} 审核包：{title}
 
-1. 在主 Codex 任务中说“开始审稿”，由 Codex 控制已登录的 Chrome 和 Google AI Studio；
-2. Codex 上传 `02_review_payload/`、使用 `02A_GEMINI_AI_STUDIO_PROMPT.md` 并保存 Gemini 回复；
+1. 队员在已配置好的 Google AI Studio 审稿对话中打开上传功能；
+2. 队员全选上传 `02_ai_studio_upload/`，粘贴 `02A_GEMINI_AI_STUDIO_PROMPT.md` 并保存 Gemini 回复；
 3. 将同一载荷和 `02B_CODEX_REVIEWER_BRIEF.md` 发送到本题独立 Codex 审稿任务；
 4. 两份独立审核完成后生成 `03_AI_REVIEW.md` 与 `04_AI_CROSSCHECK.md`；
 5. 队员完成 `04_HUMAN_CHECKLIST.md` 与 `05_HUMAN_DECISION.md`；

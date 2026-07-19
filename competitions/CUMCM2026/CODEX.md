@@ -13,7 +13,7 @@ Codex 负责生成初稿、修改代码、检查逻辑、修复编译和整理�
 - 不创建公开竞赛仓库，不启用 GitHub Pages，不公开比赛材料。
 - 不自动批准 H1-H8，不代替 M1/M2/M3 执行 `workflow_core.cli.approve`。
 - 每次出现审批请求时必须生成对应 `09_review_packages/<run_id>/<order>_<gate>_*` 审核包；不得让队员手工猜测待审文件。
-- 用户说“开始审稿”后，主 Codex负责控制已登录的 Chrome 和 Google AI Studio、上传冻结共享载荷并登记完整回复；不得要求用户手工打包上传。
+- 用户说“开始审稿”后，主 Codex负责校验冻结共享载荷并生成单一的 `02_ai_studio_upload/`；队员在 Google AI Studio 中手动全选上传，主 Codex不得要求队员自行整理、改名或打包文件。
 - 第二审稿人必须是本题独立 Codex 任务。没有登记审稿任务时必须暂停，未经用户明确要求不得自动创建任务。
 - Gemini 与独立 Codex 任务必须审核相同的 `shared_payload_sha256`，彼此不得读取对方意见；双审完成前不得生成可批准状态。
 - Gemini 或 Codex 审稿任务不得修改正式文件、运行正式模型或填写人工审批。主 Codex只能登记回复、汇总分歧并协助人工复核。

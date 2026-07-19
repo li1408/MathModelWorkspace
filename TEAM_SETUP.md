@@ -74,9 +74,9 @@ competitions/CUMCM2026/09_review_packages/<run_id>/
 
 打开 `00_REVIEW_INDEX.csv`，按 `01_H1` 到 `08_H8` 的顺序处理。每个门禁只需：
 
-1. 在主 Codex 任务中说“开始审稿”，不需要自己整理或上传材料；
-2. 主 Codex 控制 Chrome，在 Google AI Studio 完成第一份独立审核；
-3. 主 Codex 将同一份冻结载荷发送给本题独立 Codex 审稿任务；
+1. 在主 Codex 任务中说“开始审稿”，由 Codex校验载荷并准备上传目录；
+2. 队员在 Google AI Studio 中全选上传 `02_ai_studio_upload/` 并粘贴 `02A_GEMINI_AI_STUDIO_PROMPT.md`；
+3. 主 Codex登记 Gemini 回复，并将同一份冻结载荷发送给本题独立 Codex 审稿任务；
 4. 工作流保存两份回复并生成 `03_AI_REVIEW.md` 与 `04_AI_CROSSCHECK.md`；
 5. 队员完成 `04_HUMAN_CHECKLIST.md` 和 `05_HUMAN_DECISION.md`；
 6. 队员执行 `06_APPROVE_COMMAND.txt` 中的命令。

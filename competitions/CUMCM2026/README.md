@@ -98,7 +98,7 @@ major claim 必须有 direct evidence。稳定性、鲁棒性、准确性或最�
 09_review_packages/<run_id>/00_REVIEW_INDEX.csv
 ```
 
-每个包包含一份冻结共享载荷、Google AI Studio 提示词和独立 Codex 审稿任务交接说明。队员不需要自己上传：在主 Codex 任务中说“开始审稿”，主 Codex 负责浏览器上传、保存 Gemini 回复、发送第二份审核任务并生成交叉核对。任一 AI 回复、合并结果或人工结论仍有 `PENDING` 标记时，批准命令都会被拒绝。
+每个包包含冻结共享载荷、AI Studio 兼容上传目录、Google AI Studio 提示词和独立 Codex 审稿任务交接说明。主 Codex负责校验并生成 `02_ai_studio_upload/`，队员只需在 AI Studio 中全选其中的 `.txt` 文件。主 Codex随后登记 Gemini 回复、发送第二份审核任务并生成交叉核对。任一 AI 回复、合并结果或人工结论仍有 `PENDING` 标记时，批准命令都会被拒绝。
 
 当前没有创建本题的独立 Codex 审稿任务。以后创建后，只把任务 ID 写入 Git 忽略的 `config/local/review_tasks.local.yml`，不得写入正式配置或匿名提交包。
 
